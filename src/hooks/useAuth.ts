@@ -21,6 +21,7 @@ const useAuth = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { chainId, activate, deactivate, setError } = useWeb3React()
+
   const { toastError } = useToast()
 
   const login = useCallback(

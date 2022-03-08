@@ -8,6 +8,11 @@ import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-defaul
 import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 
+enum ChainId {
+  MAINNET = 43474,
+  TESTNET = 43474,
+}
+
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
   id: string

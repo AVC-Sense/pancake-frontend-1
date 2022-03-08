@@ -1,3 +1,4 @@
+import util from 'util'
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
@@ -112,6 +113,9 @@ import type {
 
 const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
+  console.log(util.inspect(signerOrProvider))
+  console.log(util.inspect(address))
+  console.log(util.inspect(abi))
   return new Contract(address, abi, signerOrProvider)
 }
 

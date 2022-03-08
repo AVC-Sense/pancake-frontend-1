@@ -4,6 +4,7 @@ import { Currency, CurrencyAmount, Pair, Token, Trade } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import util from 'util'
 
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
