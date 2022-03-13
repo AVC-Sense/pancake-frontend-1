@@ -43,44 +43,13 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     },
     {
-      "name": "Token A",
-      "symbol": "TKNA",
-      "address": "0x3F95552913B3B0cf7d95Cbb20D4C32e21D84A074",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
-    },
-   {
-      "name": "Token B",
-      "symbol": "TKNB",
-      "address": "0x39CdbE25d2C9BA0D78b8374b1340fE7125749aC9",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
-    },
-    {
       "name": "PancakeSwap Token",
       "symbol": "CAKE",
       "address": "0x3eE683BcC1F87FC33eB8fA730968aa10fd5ef445",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
-    },
-    {
-      "name": "Alessio Test Token",
-      "symbol": "ALSSOTST",
-      "address": "0x222C4f888E3c2614C55A7846fb2ba3D3f07C0a0A",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
-    },
-    {
-      "name": "AVC Test Token",
-      "symbol": "AVCTST",
-      "address": "0xF6EBDe750e4459769F823Ac68d7aDAd191AC2281",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     }
+    
   ]
 }
