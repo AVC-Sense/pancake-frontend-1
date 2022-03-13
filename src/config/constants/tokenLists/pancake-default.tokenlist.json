@@ -65,6 +65,22 @@
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
+    },
+    {
+      "name": "Alessio Test Token",
+      "symbol": "ALSSOTST",
+      "address": "0x222C4f888E3c2614C55A7846fb2ba3D3f07C0a0A",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
+    },
+    {
+      "name": "AVC Test Token",
+      "symbol": "AVCTST",
+      "address": "0xF6EBDe750e4459769F823Ac68d7aDAd191AC2281",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     }
   ]
 }
