@@ -1,6 +1,7 @@
 import { PoolDeployedBlockNumber } from './types'
 
 const poolsDeployedBlockNumber: PoolDeployedBlockNumber = {
+  '0x83c5C9bF5457458cf429cB288f4273c16AEA9176': 0,
   '0x73feaa1eE314F8c655E354234017bE2193C9E24E': 699498,
   '0x09e727c83a75fFdB729280639eDBf947dB76EeB7': 14068005,
   '0x2718D56aE2b8F08B3076A409bBF729542233E451': 13930663,
