@@ -10,14 +10,7 @@
   "logoURI": "https://pancakeswap.finance/logo.png",
   "keywords": ["pancake", "default"],
   "tokens": [
-    {
-      "name": "WBNB Token",
-      "symbol": "WBNB",
-      "address": "0xA607b41f4ddC5B92e9e49fcd9A4FAFD6C1B9732D",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
-    },
+    
     {
       "name": "AVC Token",
       "symbol": "AVC",
@@ -41,15 +34,8 @@
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
-    },
-    {
-      "name": "PancakeSwap Token",
-      "symbol": "CAKE",
-      "address": "0x3eE683BcC1F87FC33eB8fA730968aa10fd5ef445",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     }
+    
     
   ]
 }

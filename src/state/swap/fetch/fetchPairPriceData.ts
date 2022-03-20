@@ -21,12 +21,15 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
   const client = infoClient
 
   try {
+    console.log('fetchPairPriceData enter:   pairId  timeWindowIdsCountMapping[timeWindow] + ')
     switch (timeWindow) {
       case PairDataTimeWindowEnum.DAY: {
-        const data = await requestWithTimeout<PairHoursDatasResponse>(client, pairHourDatas, {
+        console.log('fetchPairPriceData enter part2aa: ')
+        const data = await requestWithTimeout<any>(client, pairHourDatas, {
           pairId,
           first: timeWindowIdsCountMapping[timeWindow],
         })
+        console.log('fetchPairPriceData enter part2: ')
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.WEEK: {
@@ -62,6 +65,7 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           return { data: { pairDayDatas: [] }, error: false }
         }
         const pairLastId = getPairSequentialId({ id: lastId, pairId })
+        console.log('dartaaa')
         const pairDayIds = getIdsByTimeWindow({
           pairAddress: pairId,
           pairLastId,
@@ -73,8 +77,10 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
         })
         return { data: pairDayData, error: false }
       }
-      default:
+      default: {
+        console.log('fffffffeeeeeeee')
         return { data: null, error: false }
+      }
     }
   } catch (error) {
     console.error('Failed to fetch price chart data', error)

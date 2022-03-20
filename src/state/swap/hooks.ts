@@ -342,7 +342,7 @@ export const useFetchPairPrices = ({
   useEffect(() => {
     const fetchDerivedData = async () => {
       console.info(
-        '[Price Chart]: Not possible to retrieve price data from single pool, trying to fetch derived prices',
+        'zzz [Price Chart]: Not possible to retrieve price data from single pool, trying to fetch derived prices',
       )
       try {
         // Try to get at least derived data for chart
@@ -364,9 +364,13 @@ export const useFetchPairPrices = ({
     }
 
     const fetchAndUpdatePairPrice = async () => {
+      const nowaa = Date.now()
+      console.log(`before fetchPairPriceData:${nowaa}`)
       setIsLoading(true)
       const { data } = await fetchPairPriceData({ pairId, timeWindow })
+      console.log('after fetchPairPriceData:')
       if (data) {
+        console.log('got data')
         // Find out if Liquidity Pool has enough liquidity
         // low liquidity pool might mean that the price is incorrect
         // in that case try to get derived price
@@ -382,11 +386,17 @@ export const useFetchPairPrices = ({
         }
       } else {
         dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
+        console.log('got here before no data')
         fetchDerivedData()
       }
     }
-
     if (!pairData && !derivedPairData && pairId && !isLoading) {
+      console.log('nnnnnn')
+
+      if (pairData) {
+        console.log(pairData.length)
+      }
+
       fetchAndUpdatePairPrice()
     }
   }, [
@@ -405,6 +415,7 @@ export const useFetchPairPrices = ({
     const updatePairId = () => {
       try {
         const pairAddress = getLpAddress(token0Address, token1Address)?.toLowerCase()
+        console.log(`update pairAddress:   + ${pairAddress}`)
         if (pairAddress !== pairId) {
           setPairId(pairAddress)
         }
@@ -427,6 +438,9 @@ export const useFetchPairPrices = ({
   )
 
   const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
+  //  console.log("swap price" + currentSwapPrice + " " + hasSwapPrice )
+  // if(currentSwapPrice)
+  // console.log("currentswaaap price: " + currentSwapPrice[token0Address])
 
   const normalizedPairDataWithCurrentSwapPrice =
     normalizedPairData?.length > 0 && hasSwapPrice

@@ -2,6 +2,7 @@ import { getUnixTime, subDays, subWeeks, startOfMinute } from 'date-fns'
 import { GraphQLClient } from 'graphql-request'
 import { getGQLHeaders } from 'utils/graphql'
 import requestWithTimeout from 'utils/requestWithTimeout'
+import util from 'util'
 
 /**
  * Helper function to get large amount GraphQL subqueries
@@ -20,23 +21,32 @@ export const multiQuery = async (
   let fetchedData = {}
   let allFound = false
   let skip = 0
+  console.log(`endpointzzz:  + ${endpoint}`)
   const client = new GraphQLClient(endpoint, { headers: getGQLHeaders(endpoint) })
   try {
+    console.log('hereaaaaa')
+    /* eslint-disable no-await-in-loop */
     while (!allFound) {
       let end = subqueries.length
       if (skip + skipCount < subqueries.length) {
         end = skip + skipCount
       }
+      console.log('requestWithTimeout before')
       const subqueriesSlice = subqueries.slice(skip, end)
       // eslint-disable-next-line no-await-in-loop
+      //      console.log("subqueriesSlice" +subqueriesSlice)
+      // if(endpoint==="http://73.131.65.17:8000/subgraphs/name/pancakeswap/exchange")
+      //  console.log(`AAAAA + ${queryConstructor(subqueriesSlice)}`)
       const result: any = await requestWithTimeout(client, queryConstructor(subqueriesSlice))
       fetchedData = {
         ...fetchedData,
         ...result,
       }
+      console.log(`result requestWithTimeout:  `)
       allFound = Object.keys(result).length < skipCount || skip + skipCount > subqueries.length
       skip += skipCount
     }
+    /* eslint-disable no-await-in-loop */
     return fetchedData
   } catch (error) {
     console.error('Failed to fetch info data', error)
