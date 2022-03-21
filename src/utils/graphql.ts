@@ -5,7 +5,7 @@ import { GraphQLClient } from 'graphql-request'
 // Mostly for dev environment
 // No production env check since production preview might also need them
 export const getGQLHeaders = (endpoint: string) => {
-  if (false) {
+  if (true) {
     return {
       'X-Sf':
         process.env.NEXT_PUBLIC_SF_HEADER ||
