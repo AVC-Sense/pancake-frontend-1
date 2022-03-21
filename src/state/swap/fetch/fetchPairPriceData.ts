@@ -1,3 +1,4 @@
+import util from 'util'
 import requestWithTimeout from 'utils/requestWithTimeout'
 import { infoClient } from 'utils/graphql'
 import lastPairDayId from '../queries/lastPairDayId'
@@ -29,7 +30,8 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           pairId,
           first: timeWindowIdsCountMapping[timeWindow],
         })
-        console.log('fetchPairPriceData enter part2: ')
+        const result22 = util.inspect(data)
+        console.log(`fetchPairPriceData enter part2: ${result22}`)
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.WEEK: {
@@ -83,6 +85,7 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
       }
     }
   } catch (error) {
+    console.log(`zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ${error}`)
     console.error('Failed to fetch price chart data', error)
     return { error: true }
   }

@@ -42,7 +42,8 @@ export const multiQuery = async (
         ...fetchedData,
         ...result,
       }
-      console.log(`result requestWithTimeout:  `)
+      const resultStr = util.inspect(result)
+      console.log(`result requestWithTimeout: ${resultStr} `)
       allFound = Object.keys(result).length < skipCount || skip + skipCount > subqueries.length
       skip += skipCount
     }

@@ -4,8 +4,10 @@ const requestWithTimeout = <T>(
   graphQLClient: GraphQLClient,
   request: string,
   variables?: any,
-  timeout = 30000,
+  timeout = 100000000,
 ): Promise<T> => {
+  // return variables ? graphQLClient.request<T>(request, variables) : graphQLClient.request<T>(request),
+
   return Promise.race([
     variables ? graphQLClient.request<T>(request, variables) : graphQLClient.request<T>(request),
     new Promise((_, reject) => {

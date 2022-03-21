@@ -33,7 +33,8 @@ export const pairHasEnoughLiquidity = (
   data: PairHoursDatasResponse | PairDayDatasResponse | null,
   timeWindow: PairDataTimeWindowEnum,
 ) => {
-  const liquidityThreshold = 10000
+  return true
+  const liquidityThreshold = 1000
   switch (timeWindow) {
     case PairDataTimeWindowEnum.DAY:
     case PairDataTimeWindowEnum.WEEK: {
@@ -41,6 +42,7 @@ export const pairHasEnoughLiquidity = (
       const totalUSD = (data as PairHoursDatasResponse)?.pairHourDatas?.reduce((totalLiquidity, fetchPairEntry) => {
         return totalLiquidity + parseFloat(fetchPairEntry.reserveUSD)
       }, 0)
+      console.log(totalUSD)
       return totalUSD / amountOfDataPoints > liquidityThreshold
     }
     case PairDataTimeWindowEnum.MONTH:
