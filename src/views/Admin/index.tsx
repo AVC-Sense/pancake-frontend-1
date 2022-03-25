@@ -150,6 +150,11 @@ const AdminCard = () => {
       })
     }
   }
+
+  const handleOnUserInput = (event) => {
+    const x = 1
+  }
+
   /*
  <div className='accountDisplay'>
 				<h3>Address: {defaultAccount}</h3>
@@ -182,6 +187,9 @@ const AdminCard = () => {
           onCurrencySelect={handleInputSelect}
           label="yahoo"
           currency={currencies[Field.INPUT]}
+          value={0}
+          showMaxButton={false}
+          onUserInput={handleOnUserInput}
           /*
                   title={t('Swap')}
                   subtitle={t('Trade tokens in an instant')}
