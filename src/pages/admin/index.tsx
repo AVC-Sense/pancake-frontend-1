@@ -1,10 +1,7 @@
-import { IfoPageLayout } from '../../views/Ifos'
-import Ifo from '../../views/Ifos/Ifo'
+import AdminCard from '../../views/Admin'
 
 const CurrentIfoPage = () => {
-  return <Ifo />
+  return <AdminCard />
 }
-
-CurrentIfoPage.Layout = IfoPageLayout
 
 export default CurrentIfoPage
