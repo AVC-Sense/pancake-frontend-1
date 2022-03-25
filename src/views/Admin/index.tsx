@@ -27,6 +27,8 @@ import {
   useSingleTokenSwapInfo,
 } from '../../state/swap/hooks'
 
+declare let window: any
+
 const AdminCard = () => {
   const { account } = useActiveWeb3React()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
