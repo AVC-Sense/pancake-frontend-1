@@ -187,7 +187,7 @@ const AdminCard = () => {
           onCurrencySelect={handleInputSelect}
           label="yahoo"
           currency={currencies[Field.INPUT]}
-          value={0}
+          value="0"
           showMaxButton={false}
           onUserInput={handleOnUserInput}
           /*
