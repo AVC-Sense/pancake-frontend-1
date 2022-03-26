@@ -102,6 +102,10 @@ const AdminCard = () => {
     setRedeemAmt(event.target.value)
   }
 
+  const handleNewOwnerAddressInput = (event) => {
+    setNewOwnerAddress(event.target.value)
+  }
+
   const RedeemHandler = (event) => {
     if (account) {
       console.log(`eeeeeeee${redeemAmt} ${activeCurrencyAddress}`)
@@ -205,6 +209,30 @@ const AdminCard = () => {
     }
   }
 
+  const transferOwnershipHandler = (event) => {
+    if (account) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        avc20Cnt
+          .transferOwnership(newOwnerAddress)
+          .then(
+            (result) => {
+              console.log(`redeem results ${result}`)
+            },
+            (error) => {
+              console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
+    }
+  }
+
   const handleOnUserInput = (event) => {
     const x = 1
   }
@@ -233,6 +261,7 @@ const AdminCard = () => {
   const [redeemAmt, setRedeemAmt] = useState(null)
   const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(null)
   const [newTokenAddress, setNewTokenAddress] = useState(null)
+  const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
 
   return (
     <Flex width="100%" justifyContent="center" position="relative">
@@ -256,8 +285,8 @@ const AdminCard = () => {
         />
         <table>
           <tr>
-            <th>function</th>
-            <th>data</th>
+            <th>Function</th>
+            <th>Input Data</th>
           </tr>
           <tr>
             <td>
@@ -267,18 +296,23 @@ const AdminCard = () => {
             </td>
             <td>
               {' '}
-              <input type="text" name="rdmAmt" onChange={handleChangeInput} />
+              <input type="text" name="rdmAmt" onChange={handleChangeInput} placeholder="0" />
             </td>
           </tr>
           <tr>
             <td>
               <Button disabled={!account} onClick={AddTokenHandler}>
-                Add New Calc Token{' '}
+                Add New Calc Tokens{' '}
               </Button>
             </td>
             <td>
               {' '}
-              <input type="text" name="rdmAmt" onChange={handleNewTokenInput} />
+              <input
+                type="text"
+                name="nwCalc"
+                onChange={handleNewTokenInput}
+                placeholder="[0x0000...., 0x000000....]"
+              />
             </td>
           </tr>
           <tr>
@@ -293,6 +327,22 @@ const AdminCard = () => {
               <Button disabled={!account} onClick={collectDistributionHandler}>
                 Collect Distribution{' '}
               </Button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Button disabled={!account} onClick={transferOwnershipHandler}>
+                Transfer Contract Ownership
+              </Button>
+            </td>
+            <td>
+              {' '}
+              <input
+                type="text"
+                name="newOwnerAddrs"
+                onChange={handleNewOwnerAddressInput}
+                placeholder="0x0000000000000000000000000000000000000000"
+              />
             </td>
           </tr>
         </table>
