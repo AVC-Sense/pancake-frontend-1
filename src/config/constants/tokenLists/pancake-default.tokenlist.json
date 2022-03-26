@@ -14,7 +14,7 @@
     {
       "name": "AVC Token",
       "symbol": "AVC",
-      "address": "0x8527dA130659A61F9805C23B2dc5ad38e9A36de5",
+      "address": "0x75256a71fbdD7711d67B2FB96C0f21df0a95AdfD",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
@@ -22,15 +22,15 @@
     {
       "name": "$USD Token",
       "symbol": "$USD",
-      "address": "0x2D6fa3B1e061930320575f554D93F905F2e5E110",
+      "address": "0xB142279eF8237bc6Dc5B4D0e6ee88B2A1Da4b90f",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
     },
     {
-      "name": "Alisso Token",
+      "name": "Alesso Token",
       "symbol": "ALSSO",
-      "address": "0xf35F8FA3a979EEf4e9E96F634AaD21d413373980",
+      "address": "0xa3259d7Dd8C46B394B60e057B3B4fa2Ed8B268d5",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
