@@ -1,3 +1,4 @@
+import util from 'util'
 import React, { useState } from 'react'
 import avc20ABI from 'config/abi/AVC20.json'
 import {
@@ -108,9 +109,22 @@ const AdminCard = () => {
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
       console.log(ethers.utils.parseEther(redeemAmt))
-      avc20Cnt.redeem(ethers.utils.parseEther(redeemAmt)).then((result) => {
-        console.log(`redeem results ${avc20Cnt}`)
-      })
+      try {
+        avc20Cnt
+          .redeem(ethers.utils.parseEther(redeemAmt))
+          .then(
+            (result) => {
+              console.log(`redeem results ${result}`)
+            },
+            (error) => {
+              console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
     }
   }
 
@@ -119,9 +133,23 @@ const AdminCard = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      avc20Cnt.addToTokenList(newTokenAddress).then((result) => {
-        console.log(result)
-      })
+
+      try {
+        avc20Cnt
+          .addToTokensListArray(newTokenAddress)
+          .then(
+            (result) => {
+              console.log(`redeem results ${result}`)
+            },
+            (error) => {
+              console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
     }
   }
 
@@ -134,9 +162,22 @@ const AdminCard = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      avc20Cnt.distribute(activeCurrencyAddress).then((result) => {
-        console.log(result)
-      })
+      try {
+        avc20Cnt
+          .distribute()
+          .then(
+            (result) => {
+              console.log(`redeem results ${result}`)
+            },
+            (error) => {
+              console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
     }
   }
 
@@ -145,9 +186,22 @@ const AdminCard = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      avc20Cnt.collect().then((result) => {
-        console.log(result)
-      })
+      try {
+        avc20Cnt
+          .collect()
+          .then(
+            (result) => {
+              console.log(`redeem results ${result}`)
+            },
+            (error) => {
+              console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
     }
   }
 
