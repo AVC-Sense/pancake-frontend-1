@@ -161,6 +161,7 @@ const AdminCard = () => {
     setNewTokenAddress(event.target.value)
   }
 
+  /*
   const distributeHandler = (event) => {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -184,7 +185,7 @@ const AdminCard = () => {
       }
     }
   }
-
+  */
   const collectDistributionHandler = (event) => {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -223,6 +224,54 @@ const AdminCard = () => {
             },
             (error) => {
               console.log(`redeem errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
+    }
+  }
+
+  const voteForHandler = (event) => {
+    if (account) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        avc20Cnt
+          .placeVoteForDist()
+          .then(
+            (result) => {
+              console.log(`vote for results ${result}`)
+            },
+            (error) => {
+              console.log(`vote for errorresults ${util.inspect(error)}`)
+              alert(`${util.inspect(error)}`)
+            },
+          )
+          .catch((err) => alert(err))
+      } catch (e) {
+        console.log(`redeem error ${e}`)
+      }
+    }
+  }
+
+  const removeVoteHandler = (event) => {
+    if (account) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        avc20Cnt
+          .removeVoteForDist()
+          .then(
+            (result) => {
+              console.log(`remove vote results ${result}`)
+            },
+            (error) => {
+              console.log(`remove vote ${util.inspect(error)}`)
               alert(`${util.inspect(error)}`)
             },
           )
@@ -317,13 +366,6 @@ const AdminCard = () => {
           </tr>
           <tr>
             <td>
-              <Button disabled={!account} onClick={distributeHandler}>
-                Distribute Token{' '}
-              </Button>
-            </td>
-          </tr>
-          <tr>
-            <td>
               <Button disabled={!account} onClick={collectDistributionHandler}>
                 Collect Distribution{' '}
               </Button>
@@ -343,6 +385,20 @@ const AdminCard = () => {
                 onChange={handleNewOwnerAddressInput}
                 placeholder="0x0000000000000000000000000000000000000000"
               />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Button disabled={!account} onClick={voteForHandler}>
+                Vote For Distribution
+              </Button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Button disabled={!account} onClick={removeVoteHandler}>
+                Remove Vote For Distribution
+              </Button>
             </td>
           </tr>
         </table>
