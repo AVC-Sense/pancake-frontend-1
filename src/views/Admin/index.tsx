@@ -140,7 +140,7 @@ const AdminCard = () => {
 
       try {
         avc20Cnt
-          .addToTokensListArray(newTokenAddress)
+          .addToTokensListArray(JSON.parse(newTokenAddress))
           .then(
             (result) => {
               console.log(`redeem results ${result}`)
