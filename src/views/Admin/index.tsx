@@ -18,7 +18,7 @@ import { ethers } from 'ethers'
 import { Field } from '../../state/swap/actions'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import CurrencyInputPanelCustom from '../../components/CurrencyInputPanelCustom'
 
 import {
   useDefaultsFromURLSearch,
@@ -315,7 +315,7 @@ const AdminCard = () => {
   return (
     <Flex width="100%" justifyContent="center" position="relative">
       <div>
-        <CurrencyInputPanel
+        <CurrencyInputPanelCustom
           onCurrencySelect={handleInputSelect}
           label="yahoo"
           currency={currencies[Field.INPUT]}
