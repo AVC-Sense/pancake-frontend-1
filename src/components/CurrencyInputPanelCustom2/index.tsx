@@ -79,7 +79,10 @@ export default function CurrencyInputPanelCustom2({
 
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
 
-  const contractBalance = useCurrencyBalance(currency ? currency.address : undefined, currency ?? undefined)
+  const contractBalance = useCurrencyBalance(
+    currency && currency.address ? currency.address : undefined,
+    currency ?? undefined,
+  )
 
   const tokenTotalSupply = useTotalSupply(currency ?? undefined)
 

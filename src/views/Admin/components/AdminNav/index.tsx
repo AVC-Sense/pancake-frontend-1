@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradients.cardHeader};
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 16px;
   flex-direction: column;
   gap: 8px;

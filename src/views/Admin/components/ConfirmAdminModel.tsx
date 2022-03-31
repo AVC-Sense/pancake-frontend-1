@@ -134,12 +134,15 @@ const ConfirmAdminModal: React.FC<InjectedModalProps & ConfirmAdminModalProps> =
       onDismiss={onDismiss}
     >
       <div>
-        !isCloseButton ?{' '}
-        <Button disabled={isDisabled} onClick={RedeemHandler}>
-          {' '}
-          Redeem{' '}
-        </Button>{' '}
-        : isCloseButton ? <Button onClick={onDismiss}>Close </Button> :
+        {!isCloseButton ? (
+          <Button disabled={isDisabled} onClick={RedeemHandler}>
+            Redeem
+          </Button>
+        ) : (
+          ' '
+        )}
+
+        {isCloseButton ? <Button onClick={onDismiss}>Close </Button> : ' '}
       </div>
     </Modal>
   )
