@@ -1,6 +1,8 @@
+import util from 'util'
 import avc20ABI from 'config/abi/AVC20.json'
 import { useCallback, useMemo, useState } from 'react'
 import { currencyEquals, Trade } from '@pancakeswap/sdk'
+import { ethers } from 'ethers'
 
 import {
   Button,
@@ -8,6 +10,7 @@ import {
   ArrowDownIcon,
   Box,
   useModal,
+  Modal,
   Flex,
   IconButton,
   BottomDrawer,
@@ -44,9 +47,15 @@ function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
 interface ConfirmAdminModalProps {
   currency: Currency
   sizeRedeem: number
+  customOnDismiss?: () => void
 }
 
-const ConfirmAdminModal: React.FC<ConfirmAdminModalProps> = ({ currency, sizeRedeem }) => {
+const ConfirmAdminModal: React.FC<InjectedModalProps & ConfirmAdminModalProps> = ({
+  currency,
+  sizeRedeem,
+  customOnDismiss,
+  onDismiss,
+}) => {
   /*
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -54,32 +63,45 @@ const ConfirmAdminModal: React.FC<ConfirmAdminModalProps> = ({ currency, sizeRed
   )
   */
   const { account } = useActiveWeb3React()
-  console.log(`SizeRedeem: ${sizeRedeem}`)
 
   const RedeemHandler = (event) => {
     if (account) {
-      console.log(`eeeeeeee${redeemAmt} ${activeCurrencyAddressz}`)
+      setIsDisabled(true)
+      console.log(`currency wwww: ${util.inspect(currency)}`)
+      console.log(account)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      console.log(ethers.utils.parseEther(redeemAmt))
+      const avc20Cnt = new ethers.Contract(currency.address, avc20ABI.abi, signer)
+      console.log(ethers.utils.parseEther(sizeRedeem))
       try {
         avc20Cnt
-          .redeem(ethers.utils.parseEther(redeemAmt))
+          .redeem(ethers.utils.parseEther(sizeRedeem))
           .then(
             (result) => {
-              console.log(`redeem results ${result}`)
+              alert('transaction succeeded')
+              console.log(`redeem results ${util.inspect(result)}`)
+              setIsCloseButton(true)
             },
             (error) => {
+              alert('transaction failed')
               console.log(`redeem errorresults ${util.inspect(error)}`)
               alert(`${util.inspect(error)}`)
+              setIsCloseButton(true)
             },
           )
-          .catch((err) => alert(err))
+          .catch((err) => {
+            alert(`transaction failed ${err}`)
+            setIsCloseButton(true)
+          })
       } catch (e) {
         console.log(`redeem error ${e}`)
+        setIsCloseButton(true)
       }
     }
+  }
+
+  const handleDismiss = (event) => {
+    console.log('called handleDismiss')
   }
 
   // text to show while loading
@@ -102,10 +124,24 @@ const ConfirmAdminModal: React.FC<ConfirmAdminModalProps> = ({ currency, sizeRed
   */
 
   const [myText, setMyText] = useState('My Original Text')
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [isCloseButton, setIsCloseButton] = useState(false)
+
   return (
-    <div>
-      <Button disabled={false}>Do you really want to Reedeem {sizeRedeem} ?</Button>
-    </div>
+    <Modal
+      title={`Confirm: Do you want to redeem ${sizeRedeem} tokens of ${currency?.symbol}`}
+      headerBackground="gradients.cardHeader"
+      onDismiss={onDismiss}
+    >
+      <div>
+        !isCloseButton ?{' '}
+        <Button disabled={isDisabled} onClick={RedeemHandler}>
+          {' '}
+          Redeem{' '}
+        </Button>{' '}
+        : isCloseButton ? <Button onClick={onDismiss}>Close </Button> :
+      </div>
+    </Modal>
   )
 }
 

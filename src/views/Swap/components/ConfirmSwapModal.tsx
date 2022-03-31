@@ -1,3 +1,4 @@
+import util from 'util'
 import { useCallback, useMemo } from 'react'
 import { currencyEquals, Trade } from '@pancakeswap/sdk'
 import { InjectedModalProps } from '@pancakeswap/uikit'
@@ -53,7 +54,6 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
     [originalTrade, trade],
   )
-
   const { t } = useTranslation()
 
   const modalHeader = useCallback(() => {

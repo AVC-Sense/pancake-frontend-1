@@ -45,10 +45,6 @@ const AdminRedeemCard = (lastAddress: string) => {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
-  if (maxAmountInput) {
-    console.log(`maxAmountSpend ${util.inspect(maxAmountInput)}`)
-  }
-
   const handleTypeInput = useCallback(
     (value: string) => {
       onUserInput(Field.INPUT, value)
@@ -57,6 +53,10 @@ const AdminRedeemCard = (lastAddress: string) => {
     },
     [onUserInput],
   )
+
+  const handleConfirmDismiss = useCallback(() => {
+    console.log('do nothing')
+  }, [])
 
   const { independentField, typedValue, recipient } = useSwapState()
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
@@ -152,8 +152,12 @@ const AdminRedeemCard = (lastAddress: string) => {
     setNewOwnerAddress(event.target.value)
   }
 
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmAdminModal currency={currencies[Field.INPUT]} redeemAmt={formattedAmounts[Field.INPUT]} />,
+  const [onPresentConfirmModal2] = useModal(
+    <ConfirmAdminModal
+      currency={currencies[Field.INPUT]}
+      sizeRedeem={formattedAmounts[Field.INPUT]}
+      handleConfirmDismiss={handleConfirmDismiss}
+    />,
     true,
     true,
     'confirmAdminModal',
@@ -372,6 +376,7 @@ const AdminRedeemCard = (lastAddress: string) => {
   const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(null)
   const [newTokenAddress, setNewTokenAddress] = useState(null)
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
+  const [data1, setdata1] = useState({ amount: 0 })
 
   return (
     <Page removePadding={false}>
@@ -400,7 +405,13 @@ const AdminRedeemCard = (lastAddress: string) => {
                 {account && currencies[Field.INPUT] && maxAmountInput ? (
                   userHasSpecifiedInputOutput ? (
                     userHasEnoughToken ? (
-                      <Button disabled={false} onClick={onPresentConfirmModal}>
+                      <Button
+                        disabled={false}
+                        onClick={() => {
+                          console.log(`xxxxx:  ${util.inspect(formattedAmounts[Field.INPUT])}`)
+                          onPresentConfirmModal2()
+                        }}
+                      >
                         Redeem
                       </Button>
                     ) : (
