@@ -60,7 +60,7 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
 }
-export default function CurrencyInputPanelCustom({
+export default function CurrencyInputPanelCustom2({
   value,
   onUserInput,
   onMax,
@@ -81,7 +81,6 @@ export default function CurrencyInputPanelCustom({
 
   const contractBalance = useCurrencyBalance(currency ? currency.address : undefined, currency ?? undefined)
 
-  //  console.log("zz" + contractBalance.raw)
   const tokenTotalSupply = useTotalSupply(currency ?? undefined)
 
   // console.log(JSBI.greaterThanOrEqual(selectedCurrencyBalance ?? undefined, tokenTotalSupply ?? undefined))
@@ -174,6 +173,26 @@ export default function CurrencyInputPanelCustom({
           </Text>
         )}
       </Flex>
+      <InputPanel>
+        <Container as="label">
+          <LabelRow>
+            <NumericalInput
+              className="token-amount-input"
+              value={value}
+              onUserInput={(val) => {
+                onUserInput(val)
+              }}
+            />
+          </LabelRow>
+          <InputRow selected={disableCurrencySelect}>
+            {account && currency && showMaxButton && label !== 'To' && (
+              <Button onClick={onMax} scale="xs" variant="secondary">
+                {t('Max').toLocaleUpperCase(locale)}
+              </Button>
+            )}
+          </InputRow>
+        </Container>
+      </InputPanel>
     </Box>
   )
 }

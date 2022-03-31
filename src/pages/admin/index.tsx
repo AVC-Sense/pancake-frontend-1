@@ -1,7 +1,10 @@
-import AdminCard from '../../views/Admin'
+import AdminRedeemCard from '../../views/Admin/Redeem'
+import { AdminPageLayout } from '../../views/Admin'
 
-const CurrentIfoPage = () => {
-  return <AdminCard />
+const CurrentAdminPage = () => {
+  return <AdminRedeemCard />
 }
 
-export default CurrentIfoPage
+CurrentAdminPage.Layout = AdminPageLayout
+
+export default CurrentAdminPage

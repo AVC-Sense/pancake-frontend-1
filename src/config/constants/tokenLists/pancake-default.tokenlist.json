@@ -67,9 +67,28 @@
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
+    {
+      "name": "TestAA",
+      "symbol": "TESTA",
+      "address": "0x4f683965fb5E150e50075Bb4bC3A39D034009E4F",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
+    {
+      "name": "TestBB",
+      "symbol": "TESTB",
+      "address": "0x8CeFBD10D52e307Cf5Ce18A38270769C574B759c",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     }
 
 
+
+
+    
     
     
     
