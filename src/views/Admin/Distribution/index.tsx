@@ -504,7 +504,7 @@ export default function DistributionCard() {
                 <Th>{key}</Th>
               ))}
             </tr>
-            {proposalData.map((item) => (
+            {proposalData.map((item: any) => (
               <tr key={item.id}>
                 {Object.values(item).map((val) => (
                   <Td>{val}</Td>

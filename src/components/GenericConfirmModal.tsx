@@ -22,7 +22,7 @@ import {
 
 interface GenericConfirmModalProps {
   customOnDismiss?: () => void
-  functionHandler?: () => void
+  functionHandler?: (event: any) => Promise<void>
   displayText: string
   isClose: any
   buttonName: string
