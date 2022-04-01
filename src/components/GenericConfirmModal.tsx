@@ -54,7 +54,7 @@ const GenericConfirmModal: React.FC<InjectedModalProps & GenericConfirmModalProp
           ' '
         )}
 
-        {isClose.close ? <Button onClick={onDismiss}>Close </Button> : ' '}
+        {isClose.close ? <Button onClick={onDismiss()}>Close </Button> : ' '}
       </div>
     </Modal>
   )

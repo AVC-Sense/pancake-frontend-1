@@ -39,7 +39,7 @@ import {
 
 declare let window: any
 
-export default function DistributionCard() {
+export default function ManagementCard() {
   const { account } = useActiveWeb3React()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -107,7 +107,6 @@ export default function DistributionCard() {
 
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount)
-    getProposalInformtion()
   }
 
   const getAccountBalance = (account22) => {
@@ -347,6 +346,74 @@ export default function DistributionCard() {
     'onPresentConfirmRemove',
   )
 
+  const mintHandler = async (event) => {
+    if (account) {
+      console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        const result = await avc20Cnt.mintToSelf(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
+
+        alert(`Minting succeeded`)
+        setMintClose({ close: true })
+      } catch (e) {
+        alert(`mint failed`)
+        console.log(`mint error ${util.inspect(e)}`)
+      }
+    } else {
+      console.log('no account')
+    }
+  }
+
+  const [mintClose, setMintClose] = useState({ close: false })
+
+  const [OnMint] = useModal(
+    <GenericConfirmModal
+      functionHandler={mintHandler}
+      displayText={`Do you want to Mint ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT].symbol}?`}
+      isClose={mintClose}
+      buttonName="Mint"
+    />,
+    true,
+    true,
+    'onMint',
+  )
+
+  const burnHandler = async (event) => {
+    if (account) {
+      console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        const result = await avc20Cnt.burn(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
+
+        alert(`Burn succeeded`)
+        setBurnClose({ close: true })
+      } catch (e) {
+        alert(`burn failed`)
+        console.log(`burn error ${util.inspect(e)}`)
+      }
+    } else {
+      console.log('no account')
+    }
+  }
+
+  const [burnClose, setBurnClose] = useState({ close: false })
+
+  const [OnBurn] = useModal(
+    <GenericConfirmModal
+      functionHandler={burnHandler}
+      displayText={`Do you want to Burn ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT].symbol}?`}
+      isClose={burnClose}
+      buttonName="Burn"
+    />,
+    true,
+    true,
+    'onBurn',
+  )
+
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
   window.ethereum.on('chainChanged', chainChangedHandler)
@@ -368,8 +435,8 @@ export default function DistributionCard() {
       <Flex width="100%" justifyContent="center" position="relative">
         <div>
           <CurrencyInputHeader
-            title="Distribution"
-            subtitle="Distribute Token"
+            title="Token Management"
+            subtitle="Manage Tokens"
             isChartDisplayed={false}
             hasAmount={false}
             onRefreshPrice={() => {
@@ -381,7 +448,6 @@ export default function DistributionCard() {
             label="yahoo22"
             currency={currencies[Field.INPUT]}
             value={formattedAmounts[Field.INPUT]}
-            showMaxButton={false}
             onUserInput={handleTypeInput}
             id="swap-currency-input"
           />
@@ -392,31 +458,17 @@ export default function DistributionCard() {
                   <Button
                     disabled={false}
                     onClick={() => {
-                      getProposalInformtion()
+                      OnMint()
                     }}
                   >
-                    Refresh Proposal Data
+                    Mint
                   </Button>
                 ) : (
-                  <Button disabled>Refresh Proposal Data</Button>
+                  <Button disabled>Mint</Button>
                 )}
               </td>
             </tr>
           </table>
-          <Table>
-            <tr key="header">
-              {Object.keys(proposalData[0]).map((key) => (
-                <Th>{key}</Th>
-              ))}
-            </tr>
-            {proposalData.map((item: any) => (
-              <tr key={item.id}>
-                {Object.values(item).map((val) => (
-                  <Td>{val}</Td>
-                ))}
-              </tr>
-            ))}
-          </Table>
 
           <Table>
             <tr>
@@ -424,29 +476,13 @@ export default function DistributionCard() {
                 <Button
                   disabled={false}
                   onClick={() => {
-                    onPresentConfirmModal3()
+                    OnBurn()
                   }}
                 >
-                  Vote For Distribution
+                  Burn
                 </Button>
               ) : (
-                <Button disabled>Vote For Distribution</Button>
-              )}
-            </tr>
-
-            <tr>
-              {account && currencies[Field.INPUT] ? (
-                <Button
-                  disabled={false}
-                  onClick={() => {
-                    setIsCloseB({ close: false })
-                    onPresentConfirmRemove()
-                  }}
-                >
-                  Remove Vote For Distribution
-                </Button>
-              ) : (
-                <Button disabled>Remove Vote For Distribution</Button>
+                <Button disabled>Burn</Button>
               )}
             </tr>
           </Table>
