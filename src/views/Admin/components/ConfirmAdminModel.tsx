@@ -1,7 +1,7 @@
 import util from 'util'
 import avc20ABI from 'config/abi/AVC20.json'
 import { useCallback, useMemo, useState } from 'react'
-import { currencyEquals, Trade } from '@pancakeswap/sdk'
+import { currencyEquals, Trade, Currency } from '@pancakeswap/sdk'
 import { ethers } from 'ethers'
 
 import {
@@ -45,8 +45,8 @@ function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
 }
 */
 interface ConfirmAdminModalProps {
-  currency: Currency
-  sizeRedeem: number
+  currency: Currency | any
+  sizeRedeem: any
   customOnDismiss?: () => void
 }
 
@@ -105,13 +105,15 @@ const ConfirmAdminModal: React.FC<InjectedModalProps & ConfirmAdminModalProps> =
   }
 
   // text to show while loading
-  const pendingText =
+
+  const pendingText = 'rrrrr'
+  /*
     ('Redeeming %amountA% of %symbolA% ',
     {
       amountA: sizeRedeem?.toString(10) ?? '',
       symbolA: currency?.symbol ?? '' ?? '',
     })
-  /*
+  
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (

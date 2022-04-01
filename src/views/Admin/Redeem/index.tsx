@@ -35,13 +35,10 @@ import {
 
 declare let window: any
 
-const AdminRedeemCard = (lastAddress: string) => {
-  console.log(`last Adresss ${util.inspect(lastAddress)}`)
+export default function AdminRedeemCard() {
   const { account } = useActiveWeb3React()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
-
-  const input2 = 0
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
@@ -49,7 +46,6 @@ const AdminRedeemCard = (lastAddress: string) => {
     (value: string) => {
       onUserInput(Field.INPUT, value)
       setRedeemAmt(value)
-      input2 = value
     },
     [onUserInput],
   )
@@ -69,14 +65,16 @@ const AdminRedeemCard = (lastAddress: string) => {
         [Field.OUTPUT]: parsedAmount,
       }
     : {
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+        /*
         [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+        */
       }
 
   if (parsedAmounts[Field.INPUT] && maxAmountInput) {
-    console.log(`field inputww  : ${parsedAmounts[Field.INPUT].toSignificant(6)}`)
-    console.log('tttttt')
-    console.log(`nnnnn:  + ${JSBI.BigInt(maxAmountInput.numerator, maxAmountInput.denominator).toString(10)}`)
+    console.log(`field inputww1  : ${parsedAmounts[Field.INPUT].toSignificant(6)}`)
   }
 
   const userHasSpecifiedInputOutput = Boolean(
@@ -85,10 +83,7 @@ const AdminRedeemCard = (lastAddress: string) => {
 
   const userHasEnoughToken = Boolean(
     currencies[Field.INPUT] && maxAmountInput && parsedAmounts[Field.INPUT]
-      ? JSBI.lessThanOrEqual(
-          JSBI.BigInt(parsedAmounts[Field.INPUT].numerator, parsedAmounts[Field.INPUT].denominator),
-          JSBI.BigInt(maxAmountInput.numerator, maxAmountInput.denominator),
-        )
+      ? JSBI.lessThanOrEqual(parsedAmounts[Field.INPUT].raw, maxAmountInput.raw)
       : undefined,
   )
 
@@ -101,7 +96,6 @@ const AdminRedeemCard = (lastAddress: string) => {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
-  console.log(`currency: ${CurrencyInputPanelCustom2.currency}`)
   const connectWalletHandler = () => {
     if (window.ethereum) {
       window.ethereum.request({ method: 'eth_requestAccounts' }).then((result) => {
@@ -153,11 +147,7 @@ const AdminRedeemCard = (lastAddress: string) => {
   }
 
   const [onPresentConfirmModal2] = useModal(
-    <ConfirmAdminModal
-      currency={currencies[Field.INPUT]}
-      sizeRedeem={formattedAmounts[Field.INPUT]}
-      handleConfirmDismiss={handleConfirmDismiss}
-    />,
+    <ConfirmAdminModal currency={currencies[Field.INPUT]} sizeRedeem={formattedAmounts[Field.INPUT]} />,
     true,
     true,
     'confirmAdminModal',
@@ -385,10 +375,11 @@ const AdminRedeemCard = (lastAddress: string) => {
           <CurrencyInputHeader
             title="Redeem"
             subtitle={"Redeem Token for Token's Assets"}
-            setIsChartDisplayed={false}
             isChartDisplayed={false}
             hasAmount={false}
-            onRefreshPrice={false}
+            onRefreshPrice={() => {
+              console.log('refreshzz22')
+            }}
           />
           <CurrencyInputPanelCustom2
             onCurrencySelect={handleInputSelect}
@@ -439,5 +430,3 @@ const AdminRedeemCard = (lastAddress: string) => {
     </Page>
   )
 }
-
-export default AdminRedeemCard

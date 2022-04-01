@@ -1,10 +1,10 @@
 import AdminRedeemCard from '../../views/Admin/Redeem'
 import { AdminPageLayout } from '../../views/Admin'
 
-const CurrentAdminPage = () => {
+const CurrentAdminPage22 = () => {
   return <AdminRedeemCard />
 }
 
-CurrentAdminPage.Layout = AdminPageLayout
+CurrentAdminPage22.Layout = AdminPageLayout
 
-export default CurrentAdminPage
+export default CurrentAdminPage22
