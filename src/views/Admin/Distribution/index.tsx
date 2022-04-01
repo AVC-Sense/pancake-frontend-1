@@ -1,7 +1,6 @@
 import util from 'util'
 import React, { useState, useCallback } from 'react'
 import avc20ABI from 'config/abi/AVC20.json'
-
 import {
   Table,
   Td,
@@ -28,6 +27,7 @@ import Page from '../../Page'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import CurrencyInputHeader from '../../Swap/components/CurrencyInputHeader'
 import ConfirmAdminModal from '../components/ConfirmAdminModel'
+import GenericConfirmModal from '../../../components/GenericConfirmModal'
 
 import {
   useDefaultsFromURLSearch,
@@ -151,8 +151,45 @@ export default function DistributionCard() {
     setNewOwnerAddress(event.target.value)
   }
 
-  const [onPresentConfirmModal2] = useModal(
-    <ConfirmAdminModal currency={currencies[Field.INPUT]} sizeRedeem={formattedAmounts[Field.INPUT]} />,
+  const handleNewOwnerAddressInputzzz = (event) => {
+    console.log('hehehehe')
+  }
+
+  const voteForHandler22 = async (event) => {
+    console.log('enter voteForHandler')
+    if (account) {
+      console.log('enter voteForHandler')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        const numProposalStart = await avc20Cnt.getNumProposals()
+        console.log(`numProposalStart ${numProposalStart}`)
+        const result = await avc20Cnt.placeVoteForDist(numProposalStart - 1)
+        const numProposalEnd = await avc20Cnt.getNumProposals()
+        if (numProposalEnd > numProposalStart) {
+          alert('Voting Succeeded, A distribution occurred')
+        }
+        alert(`Voting succeeded`)
+        setIsCloseA({ close: true })
+      } catch (e) {
+        alert(`voting failed`)
+        console.log(`voting error ${util.inspect}`)
+      }
+    } else {
+      console.log('no account')
+    }
+  }
+
+  const [isCloseA, setIsCloseA] = useState({ close: false })
+
+  const [onPresentConfirmModal3] = useModal(
+    <GenericConfirmModal
+      functionHandler={voteForHandler22}
+      displayText="Do you wish to vote for Distribution?"
+      isClose={isCloseA}
+      buttonName="Distribute"
+    />,
     true,
     true,
     'confirmAdminModal',
@@ -326,53 +363,58 @@ export default function DistributionCard() {
     }
   }
 
-  const voteForHandler = (event) => {
+  const voteForHandler = async (event) => {
+    console.log('enter voteForHandler')
     if (account) {
+      console.log('enter voteForHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
       try {
-        avc20Cnt
-          .placeVoteForDist()
-          .then(
-            (result) => {
-              console.log(`vote for results ${result}`)
-            },
-            (error) => {
-              console.log(`vote for errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
+        const numProposalStart = await avc20Cnt.getNumProposals()
+        const result = await avc20Cnt.placeVoteForDist(numProposalStart)
       } catch (e) {
-        console.log(`redeem error ${e}`)
+        console.log(`voting error ${e}`)
       }
+    } else {
+      console.log('no account')
     }
   }
 
-  const removeVoteHandler = (event) => {
+  const removeVoteHandler = async (event) => {
+    console.log('enter voteForHandler')
     if (account) {
+      console.log('enter voteForHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
       try {
-        avc20Cnt
-          .removeVoteForDist()
-          .then(
-            (result) => {
-              console.log(`remove vote results ${result}`)
-            },
-            (error) => {
-              console.log(`remove vote ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
+        const numProposalStart = await avc20Cnt.getNumProposals()
+        const result = await avc20Cnt.removeVoteForDist(numProposalStart - 1)
+        alert('Remove Vote Succeeded')
       } catch (e) {
-        console.log(`redeem error ${e}`)
+        alert(`Remove Vote Failed`)
+        console.log(`voting error ${util.inspect}`)
       }
+    } else {
+      console.log('no account')
     }
+    setIsCloseB({ close: true })
   }
+
+  const [isCloseB, setIsCloseB] = useState({ close: false })
+
+  const [onPresentConfirmRemove] = useModal(
+    <GenericConfirmModal
+      functionHandler={removeVoteHandler}
+      displayText="Do you wish to Remove your votes?"
+      isClose={isCloseB}
+      buttonName="Remove Vote"
+    />,
+    true,
+    true,
+    'onPresentConfirmRemove',
+  )
 
   const handleOnUserInput = (event) => {
     console.log(util.inspect(event))
@@ -477,7 +519,7 @@ export default function DistributionCard() {
                 <Button
                   disabled={false}
                   onClick={() => {
-                    getProposalInformtion()
+                    onPresentConfirmModal3()
                   }}
                 >
                   Vote For Distribution
@@ -494,15 +536,14 @@ export default function DistributionCard() {
                 <Button
                   disabled={false}
                   onClick={() => {
-                    getProposalInformtion()
+                    setIsCloseB({ close: false })
+                    onPresentConfirmRemove()
                   }}
                 >
                   Remove Vote For Distribution
                 </Button>
               ) : (
-                <Button disabled onClick={RedeemHandler}>
-                  Remove Vote For Distribution
-                </Button>
+                <Button disabled>Remove Vote For Distribution</Button>
               )}
             </tr>
           </Table>
