@@ -430,6 +430,8 @@ export default function ManagementCard() {
   const [data1, setdata1] = useState({ amount: 0 })
   const [proposalData, setProposalData] = useState([{}])
 
+  /* eslint react/jsx-boolean-value: 0 */
+
   return (
     <Page removePadding={false}>
       <Flex width="100%" justifyContent="center" position="relative">
@@ -448,6 +450,7 @@ export default function ManagementCard() {
             label="yahoo22"
             currency={currencies[Field.INPUT]}
             value={formattedAmounts[Field.INPUT]}
+            showMaxButton={true}
             onUserInput={handleTypeInput}
             id="swap-currency-input"
           />
