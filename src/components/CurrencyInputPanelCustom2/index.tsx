@@ -86,17 +86,6 @@ export default function CurrencyInputPanelCustom2({
 
   const tokenTotalSupply = useTotalSupply(currency ?? undefined)
 
-  // console.log(JSBI.greaterThanOrEqual(selectedCurrencyBalance ?? undefined, tokenTotalSupply ?? undefined))
-  /*
-  const poolTokenPercentage =
-    !!selectedCurrencyBalance && !!tokenTotalSupply
-      ? new Percent(selectedCurrencyBalance.raw, tokenTotalSupply.raw - contractBalance.raw)
-      : undefined
-  */
-  console.log(`contract balance: ${contractBalance.raw}`)
-  console.log(`my balance: ${selectedCurrencyBalance.raw}`)
-  console.log(`total supply: ${tokenTotalSupply.raw}`)
-
   const poolTokenPercentage =
     !!selectedCurrencyBalance && !!tokenTotalSupply
       ? new Percent(

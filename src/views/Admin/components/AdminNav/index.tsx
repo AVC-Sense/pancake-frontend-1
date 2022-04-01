@@ -19,8 +19,8 @@ const NavWrapper = styled(Flex)`
 const AdminNav = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const isPools = router.asPath === '/info/pools'
-  const isTokens = router.asPath === '/info/tokens'
+  const isPools = router.asPath === '/admin/distribute'
+  const isTokens = router.asPath === '/admin/management'
   let activeIndex = 0
   if (isPools) {
     activeIndex = 1
@@ -35,11 +35,11 @@ const AdminNav = () => {
           <ButtonMenuItem as={NextLinkFromReactRouter} to="/admin">
             {t('Redeem')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/pools">
-            {t('Pools')}
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/admin/distribute">
+            {t('Distribution')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/tokens">
-            {t('Tokens')}
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/admin/management">
+            {t('Administration')}
           </ButtonMenuItem>
         </ButtonMenu>
       </Box>

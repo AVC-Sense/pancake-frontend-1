@@ -83,7 +83,18 @@
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
+     {
+      "name": "TestCC",
+      "symbol": "TESTC",
+      "address": "0x80C733731fA182630A013A7358312d27bBBd0242",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     }
+
+
+    
 
 
 
