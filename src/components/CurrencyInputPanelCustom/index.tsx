@@ -52,7 +52,7 @@ interface CurrencyInputPanelProps {
   showMaxButton: boolean
   label?: string
   onCurrencySelect: (currency: Currency) => void
-  currency?: Currency | null
+  currency?: Currency | null | any
   disableCurrencySelect?: boolean
   hideBalance?: boolean
   pair?: Pair | null
