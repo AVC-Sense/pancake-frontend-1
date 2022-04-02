@@ -160,7 +160,7 @@ export default function DistributionCard() {
         setIsCloseA({ close: true })
       } catch (e) {
         alert(`voting failed`)
-        console.log(`voting error ${util.inspect}`)
+        console.log(`voting error ${util.inspect(e)}`)
       }
     } else {
       console.log('no account')
