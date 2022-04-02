@@ -149,6 +149,7 @@ export default function DistributionCard() {
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
       try {
+        console.log(`before get num proposals`)
         const numProposalStart = await avc20Cnt.getNumProposals()
         console.log(`numProposalStart ${numProposalStart}`)
         const result = await avc20Cnt.placeVoteForDist(numProposalStart - 1)
