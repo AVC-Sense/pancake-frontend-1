@@ -371,13 +371,52 @@ export default function ManagementCard() {
   const [OnMint] = useModal(
     <GenericConfirmModal
       functionHandler={mintHandler}
-      displayText={`Do you want to Mint ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT].symbol}?`}
+      displayText={`Do you want to Mint ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT]?.symbol}?`}
       isClose={mintClose}
       buttonName="Mint"
     />,
     true,
     true,
     'onMint',
+  )
+
+  const transferHandler = async (event) => {
+    if (account) {
+      console.log(`enter transfer ${formattedAmounts[Field.INPUT]}`)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      console.log(`enter transfer 22`)
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        console.log(`before transfer`)
+        const result = await avc20Cnt.transferOwnership(newOwner)
+
+        alert(`transfer succeeded`)
+        setTransferClose({ close: true })
+      } catch (e) {
+        alert(`transfer failed`)
+        console.log(`transfer error ${util.inspect(e)}`)
+      }
+    } else {
+      console.log('no account')
+    }
+  }
+
+  const [newOwner, setNewOwner] = useState('')
+  const [transferClose, setTransferClose] = useState({ close: false })
+
+  const [OnTransferOwnership] = useModal(
+    <GenericConfirmModal
+      functionHandler={transferHandler}
+      displayText={`Do you want to Transfer Ownership ${util.inspect(
+        currencies[Field.INPUT]?.symbol,
+      )} of to ${newOwner} ?`}
+      isClose={transferClose}
+      buttonName="Transfer Ownership"
+    />,
+    true,
+    true,
+    'onTransferOwnership',
   )
 
   const burnHandler = async (event) => {
@@ -405,7 +444,7 @@ export default function ManagementCard() {
   const [OnBurn] = useModal(
     <GenericConfirmModal
       functionHandler={burnHandler}
-      displayText={`Do you want to Burn ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT].symbol}?`}
+      displayText={`Do you want to Burn ${formattedAmounts[Field.INPUT]} of ${currencies[Field.INPUT]?.symbol}?`}
       isClose={burnClose}
       buttonName="Burn"
     />,
@@ -487,6 +526,33 @@ export default function ManagementCard() {
               ) : (
                 <Button disabled>Burn</Button>
               )}
+            </tr>
+            <tr>
+              <td>
+                {account && currencies[Field.INPUT] ? (
+                  <Button
+                    disabled={false}
+                    onClick={() => {
+                      OnTransferOwnership()
+                    }}
+                  >
+                    Transfer Ownership
+                  </Button>
+                ) : (
+                  <Button disabled>Transfer Ownership</Button>
+                )}
+              </td>
+              <td>
+                <input
+                  type="text"
+                  id="lname"
+                  name="lname"
+                  placeholder="0x000.."
+                  onChange={(event) => {
+                    setNewOwner(event.target.value)
+                  }}
+                />
+              </td>
             </tr>
           </Table>
 

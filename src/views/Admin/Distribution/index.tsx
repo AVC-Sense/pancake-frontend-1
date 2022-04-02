@@ -210,6 +210,7 @@ export default function DistributionCard() {
             'Passed?': getLast[3].toString(),
             id: getLast[4].toString(),
             'My Vote': numVotes.toString(),
+            Prct: getLast[5].toString(),
           }
           viewProposals.push(temp)
         }
@@ -347,6 +348,74 @@ export default function DistributionCard() {
     'onPresentConfirmRemove',
   )
 
+  const collectHandler = async (event) => {
+    console.log('enter collect')
+    if (account) {
+      console.log('enter voteForHandler')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        const result = await avc20Cnt.collect()
+        alert('Collect Succeeded')
+      } catch (e) {
+        alert(`Collect Failed`)
+        console.log(`collect error ${util.inspect}`)
+      }
+    } else {
+      console.log('no account')
+    }
+    setIsCloseC({ close: true })
+  }
+
+  const [isCloseC, setIsCloseC] = useState({ close: false })
+
+  const [OnCollect] = useModal(
+    <GenericConfirmModal
+      functionHandler={collectHandler}
+      displayText="Do you want to collect from distribution?"
+      isClose={isCloseC}
+      buttonName="Collect"
+    />,
+    true,
+    true,
+    'onCollect',
+  )
+
+  const newProposalHandler = async (event) => {
+    console.log('enter new proposal')
+    if (account) {
+      console.log('enter new proposal')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      try {
+        const result = await avc20Cnt.addProposal(proposalPrct)
+        alert('newProposalHandler Succeeded')
+      } catch (e) {
+        alert(`newProposalHandler Failed`)
+        console.log(`newProposalHandler error ${util.inspect}`)
+      }
+    } else {
+      console.log('no account')
+    }
+    setIsCloseD({ close: true })
+  }
+
+  const [isCloseD, setIsCloseD] = useState({ close: false })
+
+  const [OnNewProposal] = useModal(
+    <GenericConfirmModal
+      functionHandler={newProposalHandler}
+      displayText={`Do you want to add a new proposal handler for ${proposalPrct}%?`}
+      isClose={isCloseD}
+      buttonName="Add New Proposal"
+    />,
+    true,
+    true,
+    'onNewProposal',
+  )
+
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
   window.ethereum.on('chainChanged', chainChangedHandler)
@@ -362,6 +431,7 @@ export default function DistributionCard() {
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })
   const [proposalData, setProposalData] = useState([{}])
+  const [proposalPrct, setProposalPrct] = useState(100)
 
   return (
     <Page removePadding={false}>
@@ -448,6 +518,47 @@ export default function DistributionCard() {
               ) : (
                 <Button disabled>Remove Vote For Distribution</Button>
               )}
+            </tr>
+            <tr>
+              {account && currencies[Field.INPUT] ? (
+                <Button
+                  disabled={false}
+                  onClick={() => {
+                    OnCollect()
+                  }}
+                >
+                  Collect from Distribution
+                </Button>
+              ) : (
+                <Button disabled>Collect from Distribution</Button>
+              )}
+            </tr>
+            <tr>
+              <td>
+                {account && currencies[Field.INPUT] ? (
+                  <Button
+                    disabled={false}
+                    onClick={() => {
+                      OnNewProposal()
+                    }}
+                  >
+                    Add Proposal
+                  </Button>
+                ) : (
+                  <Button disabled>Add Proposal</Button>
+                )}
+              </td>
+              <td>
+                <input
+                  type="text"
+                  id="lname"
+                  name="lname"
+                  placeholder="100"
+                  onChange={(event) => {
+                    setProposalPrct(event.target.value)
+                  }}
+                />
+              </td>
             </tr>
           </Table>
 
