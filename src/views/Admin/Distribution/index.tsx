@@ -382,6 +382,8 @@ export default function DistributionCard() {
     'onCollect',
   )
 
+  const [proposalPrct, setProposalPrct] = useState(100)
+
   const newProposalHandler = async (event) => {
     console.log('enter new proposal')
     if (account) {
@@ -431,7 +433,6 @@ export default function DistributionCard() {
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })
   const [proposalData, setProposalData] = useState([{}])
-  const [proposalPrct, setProposalPrct] = useState(100)
 
   return (
     <Page removePadding={false}>
@@ -555,7 +556,7 @@ export default function DistributionCard() {
                   name="lname"
                   placeholder="100"
                   onChange={(event) => {
-                    setProposalPrct(event.target.value)
+                    setProposalPrct(Number(event.target.value))
                   }}
                 />
               </td>
