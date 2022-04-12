@@ -58,6 +58,17 @@ export default function DistributionCard() {
     console.log('do nothing')
   }, [])
 
+  const hexToString = () => {
+    hex_to_ascii(str1)
+
+    const hex = str1.toString()
+    let str = ''
+    for (let n = 0; n < hex.length; n += 2) {
+      str += String.fromCharCode(parseInt(hex.substr(n, 2), 16))
+    }
+    return str
+  }
+
   const { independentField, typedValue, recipient } = useSwapState()
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
@@ -144,7 +155,7 @@ export default function DistributionCard() {
 
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log('enter voteForHandler')
+      console.log('voteForHandler zzz')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
@@ -183,13 +194,13 @@ export default function DistributionCard() {
   )
 
   const getProposalInformtion = async () => {
-    const MAX_PROPOSALS = 2
+    const MAX_PROPOSALS = 5
     console.log(`getProposalInformtion`)
     if (account) {
-      console.log(`eeeeeeee${redeemAmt} ${activeCurrencyAddress}`)
+      console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
 
       try {
         const numProposal = await avc20Cnt.getNumProposals()
@@ -201,16 +212,16 @@ export default function DistributionCard() {
 
         /* eslint no-await-in-loop: 0 */
 
-        for (let i = Math.max(numProposal - 2, 0); i < numProposal; ++i) {
+        for (let i = Math.max(numProposal - MAX_PROPOSALS, 0); i < numProposal; ++i) {
           getLast = await avc20Cnt.getProposal(i)
           numVotes = await avc20Cnt.getMyVote(i)
           temp = {
-            'Votes For': getLast[0].toString(),
+            'Votes For': (Number(getLast[0]) / 10 ** 18).toString(),
             'prop #': getLast[1].toString(),
             time: getLast[2].toString(),
             'Passed?': getLast[3].toString(),
             id: getLast[4].toString(),
-            'My Vote': numVotes.toString(),
+            'My Vote': (Number(numVotes) / 10 ** 18).toString(),
             Prct: getLast[5].toString(),
           }
           viewProposals.push(temp)
@@ -227,7 +238,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
 
       try {
         avc20Cnt
@@ -252,7 +263,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         avc20Cnt
           .collect()
@@ -276,7 +287,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         avc20Cnt
           .transferOwnership(newOwnerAddress)
@@ -302,7 +313,7 @@ export default function DistributionCard() {
       console.log('enter voteForHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.placeVoteForDist(numProposalStart)
@@ -315,19 +326,19 @@ export default function DistributionCard() {
   }
 
   const removeVoteHandler = async (event) => {
-    console.log('enter voteForHandler')
+    console.log(`currencies:" + ${util.inspect(currencies)}`)
     if (account) {
-      console.log('enter voteForHandler')
+      console.log('enter removeVoteHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.removeVoteForDist(numProposalStart - 1)
         alert('Remove Vote Succeeded')
       } catch (e) {
         alert(`Remove Vote Failed`)
-        console.log(`voting error ${util.inspect}`)
+        console.log(`voting error ${util.inspect(e)}`)
       }
     } else {
       console.log('no account')
@@ -352,16 +363,17 @@ export default function DistributionCard() {
   const collectHandler = async (event) => {
     console.log('enter collect')
     if (account) {
-      console.log('enter voteForHandler')
+      console.log(`enter collect ${currencies[Field.INPUT].address}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.collect()
         alert('Collect Succeeded')
       } catch (e) {
         alert(`Collect Failed`)
-        console.log(`collect error ${util.inspect}`)
+        setIsCloseC({ close: true })
+        console.log(`collect error ${util.inspect(e)}`)
       }
     } else {
       console.log('no account')
@@ -391,7 +403,7 @@ export default function DistributionCard() {
       console.log('enter new proposal')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.addProposal(proposalPrct)
         alert('newProposalHandler Succeeded')
@@ -410,7 +422,7 @@ export default function DistributionCard() {
   const [OnNewProposal] = useModal(
     <GenericConfirmModal
       functionHandler={newProposalHandler}
-      displayText={`Do you want to add a new proposal handler for ${proposalPrct}%?`}
+      displayText={`Do you want to add a new proposal  for ${proposalPrct}%?`}
       isClose={isCloseD}
       buttonName="Add New Proposal"
     />,
@@ -418,6 +430,12 @@ export default function DistributionCard() {
     true,
     'onNewProposal',
   )
+
+  const funcTest1 = () => {
+    getProposalInformtion()
+    console.log(`called funcTest1 ${util.inspect(currencies)}`)
+    return null
+  }
 
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
@@ -429,7 +447,7 @@ export default function DistributionCard() {
   const [connButtonText, setConnButtonText] = useState('Connect Wallet')
   const [balance1, setBalance1] = useState(null)
   const [redeemAmt, setRedeemAmt] = useState(null)
-  const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(null)
+  const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(funcTest1)
   const [newTokenAddress, setNewTokenAddress] = useState(null)
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })

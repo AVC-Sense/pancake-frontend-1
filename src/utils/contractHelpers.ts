@@ -113,9 +113,6 @@ import type {
 
 const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
-  console.log(util.inspect(signerOrProvider))
-  console.log(util.inspect(address))
-  console.log(util.inspect(abi))
   return new Contract(address, abi, signerOrProvider)
 }
 
