@@ -107,6 +107,7 @@ export default function ManagementCard() {
 
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount)
+    getProposalInformtion()
   }
 
   const getAccountBalance = (account22) => {
@@ -180,9 +181,9 @@ export default function ManagementCard() {
   const [onPresentConfirmModal3] = useModal(
     <GenericConfirmModal
       functionHandler={voteForHandler22}
-      displayText="Do you wish to vote for Distribution?"
+      displayText="Do you wish to vote for a Minting?"
       isClose={isCloseA}
-      buttonName="Distribute"
+      buttonName="Minting"
     />,
     true,
     true,
@@ -508,6 +509,12 @@ export default function ManagementCard() {
     'onNewProposal',
   )
 
+  const funcTest1 = () => {
+    getProposalInformtion()
+    console.log(`called funcTest1 ${util.inspect(currencies)}`)
+    return null
+  }
+
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
   window.ethereum.on('chainChanged', chainChangedHandler)
@@ -518,7 +525,7 @@ export default function ManagementCard() {
   const [connButtonText, setConnButtonText] = useState('Connect Wallet')
   const [balance1, setBalance1] = useState(null)
   const [redeemAmt, setRedeemAmt] = useState(null)
-  const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(null)
+  const [activeCurrencyAddress, setactiveCurrencyAddress] = useState(funcTest1)
   const [newTokenAddress, setNewTokenAddress] = useState(null)
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })

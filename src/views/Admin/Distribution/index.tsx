@@ -22,7 +22,7 @@ import { ethers } from 'ethers'
 import { Field } from '../../../state/swap/actions'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import CurrencyInputPanelCustom2 from '../../../components/CurrencyInputPanelCustom2'
+import CurrencyInputPanelCustom3 from '../../../components/CurrencyInputPanelCustom3'
 import Page from '../../Page'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import CurrencyInputHeader from '../../Swap/components/CurrencyInputHeader'
@@ -107,7 +107,8 @@ export default function DistributionCard() {
 
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount)
-    getProposalInformtion()
+    console.log('accountChangedHandler called')
+    // getProposalInformtion()
   }
 
   const getAccountBalance = (account22) => {
@@ -470,7 +471,7 @@ export default function DistributionCard() {
               console.log('refreshzz22')
             }}
           />
-          <CurrencyInputPanelCustom2
+          <CurrencyInputPanelCustom3
             onCurrencySelect={handleInputSelect}
             label="yahoo22"
             currency={currencies[Field.INPUT]}
@@ -486,7 +487,7 @@ export default function DistributionCard() {
                   <Button
                     disabled={false}
                     onClick={() => {
-                      getProposalInformtion()
+                      // getProposalInformtion()
                     }}
                   >
                     Refresh Proposal Data
@@ -497,29 +498,6 @@ export default function DistributionCard() {
               </td>
             </tr>
           </table>
-          <Table>
-            <tr key="header">
-              {Object.keys(proposalData[0]).map((key) => (
-                <Th>{key}</Th>
-              ))}
-              {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? '' : <Th>Select Prop</Th>}
-            </tr>
-            {proposalData.map((item: any) => (
-              <tr key={item.id}>
-                {Object.values(item).map((val) => (
-                  <Td>{val}</Td>
-                ))}
-                <Td>
-                  {' '}
-                  {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
-                    ''
-                  ) : (
-                    <input type="radio" id={item.id} name="fname" value={item.id} onChange={radioHandler} />
-                  )}
-                </Td>
-              </tr>
-            ))}
-          </Table>
 
           <Table>
             <tr>
@@ -593,6 +571,29 @@ export default function DistributionCard() {
                 />
               </td>
             </tr>
+          </Table>
+          <Table>
+            <tr key="header">
+              {Object.keys(proposalData[0]).map((key) => (
+                <Th>{key}</Th>
+              ))}
+              {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? '' : <Th>Select Prop</Th>}
+            </tr>
+            {proposalData.map((item: any) => (
+              <tr key={item.id}>
+                {Object.values(item).map((val) => (
+                  <Td>{val}</Td>
+                ))}
+                <Td>
+                  {' '}
+                  {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
+                    ''
+                  ) : (
+                    <input type="radio" id={item.id} name="fname" value={item.id} onChange={radioHandler} />
+                  )}
+                </Td>
+              </tr>
+            ))}
           </Table>
 
           {errorMessage}
