@@ -144,15 +144,16 @@ export default function DistributionCard() {
 
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log('voteForHandler zzz')
+      console.log(`voteForHandler zzz ${currencies[Field.INPUT].address}
+        whichProposal: ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         console.log(`before get num proposals`)
         const numProposalStart = await avc20Cnt.getNumProposals()
         console.log(`numProposalStart ${numProposalStart}`)
-        const result = await avc20Cnt.placeVoteForDist(numProposalStart - 1)
+        const result = await avc20Cnt.placeVoteForDist(whichProposal)
         const numProposalEnd = await avc20Cnt.getNumProposals()
         if (numProposalEnd > numProposalStart) {
           alert('Voting Succeeded, A distribution occurred')
@@ -213,6 +214,7 @@ export default function DistributionCard() {
             'My Vote': (Number(numVotes) / 10 ** 18).toString(),
             Prct: getLast[5].toString(),
           }
+          setWhichProposal(getLast[1].toString())
           viewProposals.push(temp)
         }
         setProposalData(viewProposals)
@@ -299,13 +301,13 @@ export default function DistributionCard() {
   const voteForHandler = async (event) => {
     console.log('enter voteForHandler')
     if (account) {
-      console.log('enter voteForHandler')
+      console.log(`enter voteForHandler ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
-        const numProposalStart = await avc20Cnt.getNumProposals()
-        const result = await avc20Cnt.placeVoteForDist(numProposalStart)
+        // const numProposalStart = await avc20Cnt.getNumProposals()
+        const result = await avc20Cnt.placeVoteForDist(whichProposal)
       } catch (e) {
         console.log(`voting error ${e}`)
       }
@@ -323,7 +325,7 @@ export default function DistributionCard() {
       const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
-        const result = await avc20Cnt.removeVoteForDist(numProposalStart - 1)
+        const result = await avc20Cnt.removeVoteForDist(whichProposal)
         alert('Remove Vote Succeeded')
       } catch (e) {
         alert(`Remove Vote Failed`)
@@ -426,6 +428,12 @@ export default function DistributionCard() {
     return null
   }
 
+  const radioHandler = (event) => {
+    setWhichProposal(event.target.value)
+    console.log(`called radioHandler ${util.inspect(event.target.value)}`)
+    return null
+  }
+
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
   window.ethereum.on('chainChanged', chainChangedHandler)
@@ -441,6 +449,7 @@ export default function DistributionCard() {
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })
   const [proposalData, setProposalData] = useState([{}])
+  const [whichProposal, setWhichProposal] = useState('0')
 
   return (
     <Page removePadding={false}>
@@ -487,12 +496,28 @@ export default function DistributionCard() {
               {Object.keys(proposalData[0]).map((key) => (
                 <Th>{key}</Th>
               ))}
+              {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? '' : <Th>Select Prop</Th>}
             </tr>
             {proposalData.map((item: any) => (
               <tr key={item.id}>
                 {Object.values(item).map((val) => (
                   <Td>{val}</Td>
                 ))}
+                <Td>
+                  {' '}
+                  {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
+                    ''
+                  ) : (
+                    <input
+                      type="radio"
+                      id={item.id}
+                      name="fname"
+                      value={item.id}
+                      selected111={false}
+                      onChange={radioHandler}
+                    />
+                  )}
+                </Td>
               </tr>
             ))}
           </Table>

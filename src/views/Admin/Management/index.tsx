@@ -143,23 +143,27 @@ export default function ManagementCard() {
 
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log('enter voteForHandler')
+      console.log(`voteForHandler zzz ${currencies[Field.INPUT].address}
+        whichProposal: ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
-        const numProposalStart = await avc20Cnt.getNumProposals()
+        console.log(`before get num proposals`)
+        const numProposalStart = await avc20Cnt.getNumProposalsMint()
         console.log(`numProposalStart ${numProposalStart}`)
-        const result = await avc20Cnt.placeVoteForDist(numProposalStart - 1)
-        const numProposalEnd = await avc20Cnt.getNumProposals()
+        const result = await avc20Cnt.placeVoteForDistMint(whichProposal)
+        const numProposalEnd = await avc20Cnt.getNumProposalsMint()
+        /*
         if (numProposalEnd > numProposalStart) {
           alert('Voting Succeeded, A distribution occurred')
         }
+        */
         alert(`Voting succeeded`)
         setIsCloseA({ close: true })
       } catch (e) {
         alert(`voting failed`)
-        console.log(`voting error ${util.inspect}`)
+        console.log(`voting error ${util.inspect(e)}`)
       }
     } else {
       console.log('no account')
@@ -181,16 +185,15 @@ export default function ManagementCard() {
   )
 
   const getProposalInformtion = async () => {
-    const MAX_PROPOSALS = 2
+    const MAX_PROPOSALS = 5
     console.log(`getProposalInformtion`)
     if (account) {
-      console.log(`eeeeeeee${redeemAmt} ${activeCurrencyAddress}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
 
       try {
-        const numProposal = await avc20Cnt.getNumProposals()
+        const numProposal = await avc20Cnt.getNumProposalsMint()
         if (numProposal === 0) return
         const viewProposals = []
         let temp
@@ -199,17 +202,19 @@ export default function ManagementCard() {
 
         /* eslint no-await-in-loop: 0 */
 
-        for (let i = Math.max(numProposal - 2, 0); i < numProposal; ++i) {
-          getLast = await avc20Cnt.getProposal(i)
-          numVotes = await avc20Cnt.getMyVote(i)
+        for (let i = Math.max(numProposal - MAX_PROPOSALS, 0); i < numProposal; ++i) {
+          getLast = await avc20Cnt.getProposalMint(i)
+          numVotes = await avc20Cnt.getMyVoteMint(i)
           temp = {
-            'Votes For': getLast[0].toString(),
+            'Votes For': (Number(getLast[0]) / 10 ** 18).toString(),
             'prop #': getLast[1].toString(),
             time: getLast[2].toString(),
             'Passed?': getLast[3].toString(),
             id: getLast[4].toString(),
-            'My Vote': numVotes.toString(),
+            'My Vote': (Number(numVotes) / 10 ** 18).toString(),
+            MintAmt: (Number(getLast[6]) / 10 ** 18).toString(),
           }
+          setWhichProposal(getLast[1].toString())
           viewProposals.push(temp)
         }
         setProposalData(viewProposals)
@@ -351,7 +356,7 @@ export default function ManagementCard() {
       console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.mintToSelf(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
 
@@ -424,7 +429,7 @@ export default function ManagementCard() {
       console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.burn(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
 
@@ -453,6 +458,51 @@ export default function ManagementCard() {
     'onBurn',
   )
 
+  const radioHandler = (event) => {
+    setWhichProposal(event.target.value)
+    console.log(`called radioHandler ${util.inspect(event.target.value)}`)
+    return null
+  }
+
+  const newProposalHandler = async (event) => {
+    console.log('enter new proposalaa')
+    if (account) {
+      console.log('enter new proposalbb')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      try {
+        console.log(`YYYYY   ${proposalMintAmt}`)
+        console.log(`XXXXXX ${ethers.utils.parseEther(proposalMintAmt)}`)
+        const result = await avc20Cnt.addProposalMint(ethers.utils.parseEther(proposalMintAmt))
+        alert('newProposalHandler Succeeded')
+        console.log(`total supply ${await avc20Cnt.totalSupply()}`)
+      } catch (e) {
+        alert(`newProposalHandler Failed`)
+        console.log(`newProposalHandler error ${util.inspect(e)}`)
+      }
+    } else {
+      console.log('no account')
+    }
+    setIsCloseD({ close: false })
+  }
+
+  const [proposalMintAmt, setProposalMintAmt] = useState('1000')
+
+  const [isCloseD, setIsCloseD] = useState({ close: false })
+
+  const [OnNewProposal] = useModal(
+    <GenericConfirmModal
+      functionHandler={newProposalHandler}
+      displayText={`Do you want to add a new proposal  for ${proposalMintAmt}?`}
+      isClose={isCloseD}
+      buttonName="Add New Proposal"
+    />,
+    true,
+    true,
+    'onNewProposal',
+  )
+
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
   window.ethereum.on('chainChanged', chainChangedHandler)
@@ -467,6 +517,7 @@ export default function ManagementCard() {
   const [newTokenAddress, setNewTokenAddress] = useState(null)
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })
+  const [whichProposal, setWhichProposal] = useState('0')
   const [proposalData, setProposalData] = useState([{}])
 
   /* eslint react/jsx-boolean-value: 0 */
@@ -493,24 +544,6 @@ export default function ManagementCard() {
             onUserInput={handleTypeInput}
             id="swap-currency-input"
           />
-          <table>
-            <tr>
-              <td>
-                {account && currencies[Field.INPUT] ? (
-                  <Button
-                    disabled={false}
-                    onClick={() => {
-                      OnMint()
-                    }}
-                  >
-                    Mint
-                  </Button>
-                ) : (
-                  <Button disabled>Mint</Button>
-                )}
-              </td>
-            </tr>
-          </table>
 
           <Table>
             <tr>
@@ -554,6 +587,94 @@ export default function ManagementCard() {
                 />
               </td>
             </tr>
+            <tr>
+              <td>
+                {account && currencies[Field.INPUT] ? (
+                  <Button
+                    disabled={false}
+                    onClick={() => {
+                      getProposalInformtion()
+                    }}
+                  >
+                    Refresh Mint Proposal Data
+                  </Button>
+                ) : (
+                  <Button disabled>Refresh Proposal Data</Button>
+                )}
+              </td>
+            </tr>
+
+            <tr>
+              {account && currencies[Field.INPUT] ? (
+                <Button
+                  disabled={false}
+                  onClick={() => {
+                    onPresentConfirmModal3()
+                  }}
+                >
+                  Vote For Mint Proposal
+                </Button>
+              ) : (
+                <Button disabled>Vote For Distribution</Button>
+              )}
+            </tr>
+            <tr>
+              <td>
+                {account && currencies[Field.INPUT] ? (
+                  <Button
+                    disabled={false}
+                    onClick={() => {
+                      OnNewProposal()
+                    }}
+                  >
+                    Add Mint Proposal
+                  </Button>
+                ) : (
+                  <Button disabled>Add Proposal</Button>
+                )}
+              </td>
+              <td>
+                <input
+                  type="text"
+                  id="lname"
+                  name="lname"
+                  placeholder="1000"
+                  onChange={(event) => {
+                    setProposalMintAmt(Number(event.target.value))
+                  }}
+                />
+              </td>
+            </tr>
+          </Table>
+          <Table>
+            <tr key="header">
+              {Object.keys(proposalData[0]).map((key) => (
+                <Th>{key}</Th>
+              ))}
+              {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? '' : <Th>Select Prop</Th>}
+            </tr>
+            {proposalData.map((item: any) => (
+              <tr key={item.id}>
+                {Object.values(item).map((val) => (
+                  <Td>{val}</Td>
+                ))}
+                <Td>
+                  {' '}
+                  {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
+                    ''
+                  ) : (
+                    <input
+                      type="radio"
+                      id={item.id}
+                      name="fname"
+                      value={item.id}
+                      selected111={false}
+                      onChange={radioHandler}
+                    />
+                  )}
+                </Td>
+              </tr>
+            ))}
           </Table>
 
           {errorMessage}
