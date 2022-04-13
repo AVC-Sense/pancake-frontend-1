@@ -144,7 +144,7 @@ export default function DistributionCard() {
 
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log(`voteForHandler zzz ${currencies[Field.INPUT].address}
+      console.log(`voteForHandler zzz ${currencies[Field.INPUT]?.address}
         whichProposal: ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
@@ -508,14 +508,7 @@ export default function DistributionCard() {
                   {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
                     ''
                   ) : (
-                    <input
-                      type="radio"
-                      id={item.id}
-                      name="fname"
-                      value={item.id}
-                      selected111={false}
-                      onChange={radioHandler}
-                    />
+                    <input type="radio" id={item.id} name="fname" value={item.id} onChange={radioHandler} />
                   )}
                 </Td>
               </tr>

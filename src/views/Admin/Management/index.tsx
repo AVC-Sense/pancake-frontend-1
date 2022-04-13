@@ -429,7 +429,7 @@ export default function ManagementCard() {
       console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT]?.address, avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.burn(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
 
@@ -640,7 +640,7 @@ export default function ManagementCard() {
                   name="lname"
                   placeholder="1000"
                   onChange={(event) => {
-                    setProposalMintAmt(Number(event.target.value))
+                    setProposalMintAmt(event.target.value)
                   }}
                 />
               </td>
@@ -663,14 +663,7 @@ export default function ManagementCard() {
                   {proposalData.length === 1 && Object.keys(proposalData[0]).length === 0 ? (
                     ''
                   ) : (
-                    <input
-                      type="radio"
-                      id={item.id}
-                      name="fname"
-                      value={item.id}
-                      selected111={false}
-                      onChange={radioHandler}
-                    />
+                    <input type="radio" id={item.id} name="fname" value={item.id} onChange={radioHandler} />
                   )}
                 </Td>
               </tr>
