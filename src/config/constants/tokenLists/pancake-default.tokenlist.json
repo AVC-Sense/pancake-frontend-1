@@ -14,7 +14,7 @@
     {
       "name": "AVC Token",
       "symbol": "AVC",
-      "address": "0x87dD48518B1a2db9F260Eb64c561355151DE3512",
+      "address": "0x584195792381f17CA36D30C5d3283B804d61190D",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
@@ -22,7 +22,7 @@
     {
       "name": "$USD Token",
       "symbol": "$USD",
-      "address": "0xBA2196d25a64CC5046D6726F3efE4dF51C8Bc00b",
+      "address": "0x560c332A1041Ae246dD0396c7e9708537bE37eA0",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
@@ -30,7 +30,7 @@
     {
       "name": "Alesso Token",
       "symbol": "ALSSO",
-      "address": "0x8b223D7B8d924EBdA33E5d06Cd84B5C4247cCDC1",
+      "address": "0xCf94D65aeB9F61c04ed2d9C3b8053f57f8F0E8AC",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -39,7 +39,7 @@
     {
       "name": "Princeton Tec Token",
       "symbol": "PTE",
-      "address": "0x432E86D1bAf5B0655463b6F27852B01Ca8864C2d",
+      "address": "0xd8c88AE0a90aB92EA3958B97ebdE517350765438",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -47,7 +47,7 @@
     {
       "name": "Javasok Token",
       "symbol": "JAV",
-      "address": "0x582EC3fd7B3a4dEE35aa15a24E5dA13DFcc56d30",
+      "address": "0x5fCc3b1f62Dbf1eF43D4d9Fa80ceF496D33CaD7A",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -55,7 +55,7 @@
     {
       "name": "Banana Phone Token",
       "symbol": "BPH",
-      "address": "0xeAb62ae522722e50B33AE0099be7FC10e4d5C2aD",
+      "address": "0x7d3492a966BC93aeedf0f826523bEA3332C5ec20",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -63,23 +63,7 @@
     {
       "name": "PhilpCoin",
       "symbol": "PHILP",
-      "address": "0xb01ed52D495f983221eAa666063DD428B0E5EDDD",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
-    },
-    {
-      "name": "TestAA",
-      "symbol": "TESTA",
-      "address": "0x4f683965fb5E150e50075Bb4bC3A39D034009E4F",
-      "chainId": 43474,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
-    },
-    {
-      "name": "TestBB",
-      "symbol": "TESTB",
-      "address": "0x8CeFBD10D52e307Cf5Ce18A38270769C574B759c",
+      "address": "0x979f1906C3780CC3127EeDf9D968B5FC0Cb25b7E",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
