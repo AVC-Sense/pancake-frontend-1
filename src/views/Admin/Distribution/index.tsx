@@ -142,13 +142,19 @@ export default function DistributionCard() {
     setNewOwnerAddress(event.target.value)
   }
 
+  const getAddressaa = (input: any) => {
+    if (input?.address) return input.address
+
+    return ''
+  }
+
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log(`voteForHandler zzz ${currencies[Field.INPUT]?.address}
+      console.log(`voteForHandler zzz ${util.inspect(currencies[Field.INPUT])}
         whichProposal: ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         console.log(`before get num proposals`)
         const numProposalStart = await avc20Cnt.getNumProposals()
@@ -190,7 +196,7 @@ export default function DistributionCard() {
       console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
 
       try {
         const numProposal = await avc20Cnt.getNumProposals()
@@ -229,7 +235,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
 
       try {
         avc20Cnt
@@ -254,7 +260,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         avc20Cnt
           .collect()
@@ -278,7 +284,7 @@ export default function DistributionCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         avc20Cnt
           .transferOwnership(newOwnerAddress)
@@ -304,7 +310,7 @@ export default function DistributionCard() {
       console.log(`enter voteForHandler ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         // const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.placeVoteForDist(whichProposal)
@@ -322,7 +328,7 @@ export default function DistributionCard() {
       console.log('enter removeVoteHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.removeVoteForDist(whichProposal)
@@ -354,10 +360,10 @@ export default function DistributionCard() {
   const collectHandler = async (event) => {
     console.log('enter collect')
     if (account) {
-      console.log(`enter collect ${currencies[Field.INPUT].address}`)
+      console.log(`enter collect ${currencies[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.collect()
         alert('Collect Succeeded')
@@ -394,7 +400,7 @@ export default function DistributionCard() {
       console.log('enter new proposal')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.addProposal(proposalPrct)
         alert('newProposalHandler Succeeded')

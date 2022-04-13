@@ -141,13 +141,18 @@ export default function ManagementCard() {
     setNewOwnerAddress(event.target.value)
   }
 
+  const getAddressaa = (input: any) => {
+    if (input?.address) return input.address
+    return ''
+  }
+
   const voteForHandler22 = async (event) => {
     if (account) {
-      console.log(`voteForHandler zzz ${currencies[Field.INPUT].address}
+      console.log(`voteForHandler zzz ${getAddressaa(currencies[Field.INPUT])}
         whichProposal: ${whichProposal}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         console.log(`before get num proposals`)
         const numProposalStart = await avc20Cnt.getNumProposalsMint()
@@ -190,7 +195,7 @@ export default function ManagementCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
 
       try {
         const numProposal = await avc20Cnt.getNumProposalsMint()
@@ -229,7 +234,7 @@ export default function ManagementCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
 
       try {
         avc20Cnt
@@ -254,7 +259,7 @@ export default function ManagementCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         avc20Cnt
           .collect()
@@ -278,7 +283,7 @@ export default function ManagementCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         avc20Cnt
           .transferOwnership(newOwnerAddress)
@@ -304,7 +309,7 @@ export default function ManagementCard() {
       console.log('enter voteForHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.placeVoteForDist(numProposalStart)
@@ -322,7 +327,7 @@ export default function ManagementCard() {
       console.log('enter voteForHandler')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const numProposalStart = await avc20Cnt.getNumProposals()
         const result = await avc20Cnt.removeVoteForDist(numProposalStart - 1)
@@ -356,7 +361,7 @@ export default function ManagementCard() {
       console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.mintToSelf(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
 
@@ -391,7 +396,7 @@ export default function ManagementCard() {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       console.log(`enter transfer 22`)
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         console.log(`before transfer`)
         const result = await avc20Cnt.transferOwnership(newOwner)
@@ -429,7 +434,7 @@ export default function ManagementCard() {
       console.log(`enter mint ${formattedAmounts[Field.INPUT]}`)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT]?.address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         const result = await avc20Cnt.burn(ethers.utils.parseEther(formattedAmounts[Field.INPUT]))
 
@@ -470,7 +475,7 @@ export default function ManagementCard() {
       console.log('enter new proposalbb')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(currencies[Field.INPUT].address, avc20ABI.abi, signer)
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
       try {
         console.log(`YYYYY   ${proposalMintAmt}`)
         console.log(`XXXXXX ${ethers.utils.parseEther(proposalMintAmt)}`)
