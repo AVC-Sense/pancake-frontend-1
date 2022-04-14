@@ -125,7 +125,7 @@ export default function CurrencyInputPanelCustom3({
           >
             <Flex alignItems="center" justifyContent="space-between">
               {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={26} margin />
               ) : currency ? (
                 <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
               ) : null}
@@ -168,9 +168,9 @@ export default function CurrencyInputPanelCustom3({
           ) : null}
         </Flex>
         {account && (
-          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+          <Text onClick={onMax} fontSize="18px" style={{ display: 'inline', cursor: 'pointer' }}>
             {!hideBalance && !!currency
-              ? t('Balance: %balance% Prct: %percent%% ', {
+              ? t('Balance: %balance%,  Prct: %percent%% ', {
                   percent: poolTokenPercentage?.toSignificant(6) ?? t('Loading'),
                   balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading'),
                 })

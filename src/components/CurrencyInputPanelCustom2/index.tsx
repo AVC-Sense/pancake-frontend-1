@@ -168,11 +168,11 @@ export default function CurrencyInputPanelCustom2({
           ) : null}
         </Flex>
         {account && (
-          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+          <Text onClick={onMax} fontSize="18px" style={{ display: 'inline', cursor: 'pointer' }}>
             {!hideBalance && !!currency
-              ? t('Balance: %balance% Prct: %percent%% ', {
-                  percent: poolTokenPercentage?.toSignificant(6) ?? t('Loading'),
-                  balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading'),
+              ? t('Balance: %balance%,   Prct: %percent%% ', {
+                  percent: poolTokenPercentage?.toSignificant(5) ?? t('Loading'),
+                  balance: selectedCurrencyBalance?.toSignificant(5) ?? t('Loading'),
                 })
               : ' -'}
           </Text>

@@ -538,15 +538,6 @@ export default function ManagementCard() {
     <Page removePadding={false}>
       <Flex width="100%" justifyContent="center" position="relative">
         <div>
-          <CurrencyInputHeader
-            title="Token Management"
-            subtitle="Manage Tokens"
-            isChartDisplayed={false}
-            hasAmount={false}
-            onRefreshPrice={() => {
-              console.log('refreshzz22')
-            }}
-          />
           <CurrencyInputPanelCustom2
             onCurrencySelect={handleInputSelect}
             label="yahoo22"

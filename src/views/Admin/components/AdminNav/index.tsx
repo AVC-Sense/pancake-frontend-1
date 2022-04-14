@@ -39,7 +39,7 @@ const AdminNav = () => {
             {t('Distribution')}
           </ButtonMenuItem>
           <ButtonMenuItem as={NextLinkFromReactRouter} to="/admin/management">
-            {t('Administration')}
+            {t('Minting')}
           </ButtonMenuItem>
         </ButtonMenu>
       </Box>

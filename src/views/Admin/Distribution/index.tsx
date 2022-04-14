@@ -462,15 +462,6 @@ export default function DistributionCard() {
     <Page removePadding={false}>
       <Flex width="100%" justifyContent="center" position="relative">
         <div>
-          <CurrencyInputHeader
-            title="Distribution"
-            subtitle="Distribute Token"
-            isChartDisplayed={false}
-            hasAmount={false}
-            onRefreshPrice={() => {
-              console.log('refreshzz22')
-            }}
-          />
           <CurrencyInputPanelCustom3
             onCurrencySelect={handleInputSelect}
             label="yahoo22"
@@ -487,7 +478,7 @@ export default function DistributionCard() {
                   <Button
                     disabled={false}
                     onClick={() => {
-                      // getProposalInformtion()
+                      getProposalInformtion()
                     }}
                   >
                     Refresh Proposal Data
