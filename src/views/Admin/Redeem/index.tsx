@@ -105,6 +105,7 @@ export default function AdminRedeemCard() {
         accountChangedHandler(result[0])
         setConnButtonText('Wallet Connected')
         getAccountBalance(result[0])
+        getDistributionData()
       })
     } else {
       setErrorMessage('Install MetaMask please')
@@ -125,6 +126,7 @@ export default function AdminRedeemCard() {
     console.log(inputCurrency.address)
     setactiveCurrencyAddress(inputCurrency.address)
     onCurrencySelection(Field.INPUT, inputCurrency)
+    getDistributionData()
     /*
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)

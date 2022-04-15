@@ -649,7 +649,7 @@ export default function ManagementCard() {
               </td>
             </tr>
           </Table>
-          <Table name="Mint Proposals">
+          <Table>
             <tr key="header">
               {Object.keys(proposalData[0]).map((key) => (
                 <Th>{key}</Th>
