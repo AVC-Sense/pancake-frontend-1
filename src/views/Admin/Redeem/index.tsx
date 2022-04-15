@@ -28,7 +28,6 @@ import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import CurrencyInputHeader from '../../Swap/components/CurrencyInputHeader'
 import ConfirmAdminModal from '../components/ConfirmAdminModel'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../../hooks/Tokens'
-
 import {
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
@@ -212,10 +211,13 @@ const AdminRedeemCard = () => {
     return ''
   }
 
+  const getDistributionDataClick = (event) => {
+    getDistributionData()
+  }
+
   const getDistributionData = async (cntAddress = '') => {
     const MAX_PROPOSALS = 5
     console.log(`get Redeem Amounts`)
-    console.log(`tokenList: ${util.inspect(TokenList)}`)
     console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -229,6 +231,10 @@ const AdminRedeemCard = () => {
       const amts = []
       console.log('here')
       const amtsToDistribute = await avc20Cnt.getAvailableDistributions()
+      let totalSupply = await avc20Cnt.totalSupply()
+      const cntSelfOwn = await avc20Cnt.balanceOf(cntAddress2)
+      totalSupply -= cntSelfOwn
+
       console.log('here2')
       const tempTokenList = await avc20Cnt.getTokenList()
       console.log(`amtsToDistribute length: ${amtsToDistribute.length}`)
@@ -236,14 +242,16 @@ const AdminRedeemCard = () => {
       /* eslint no-await-in-loop: 0 */
       /* eslint no-restricted-syntax: 0 */
       let sym = ''
+      if (totalSupply <= 0) totalSupply = 10 ** 60
       for (let i = 0; i < amtsToDistribute.length; ++i) {
         for (const tokenA in defaultTokens) {
           if (tokenA === tempTokenList[i]) sym = defaultTokens[tokenA].symbol
         }
 
         temp = {
-          'Amt Available': (Number(amtsToDistribute[i]) / 10 ** 18).toString(),
+          'Amt Available': (Number(amtsToDistribute[i]) / 10 ** 18).toFixed(1),
           symbol: sym,
+          prct: `${((Number(amtsToDistribute[i]) / totalSupply) * 100).toFixed(4)}%`,
         }
         amts.push(temp)
       }
@@ -332,11 +340,11 @@ const AdminRedeemCard = () => {
             <tr>
               <td>
                 {account && currencies[Field.INPUT] && maxAmountInput ? (
-                  <Button disabled={false} onClick={getDistributionData}>
+                  <Button disabled={false} onClick={getDistributionDataClick}>
                     Get Redeem Amounts
                   </Button>
                 ) : (
-                  <Button disabled onClick={getDistributionData}>
+                  <Button disabled onClick={getDistributionDataClick}>
                     Get Redeem Amounts
                   </Button>
                 )}
