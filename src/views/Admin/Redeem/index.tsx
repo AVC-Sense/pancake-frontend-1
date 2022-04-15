@@ -1,5 +1,5 @@
 import util from 'util'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import avc20ABI from 'config/abi/AVC20.json'
 import {
   Th,
@@ -27,6 +27,7 @@ import Page from '../../Page'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import CurrencyInputHeader from '../../Swap/components/CurrencyInputHeader'
 import ConfirmAdminModal from '../components/ConfirmAdminModel'
+import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../../hooks/Tokens'
 
 import {
   useDefaultsFromURLSearch,
@@ -38,7 +39,8 @@ import {
 
 declare let window: any
 
-export default function AdminRedeemCard() {
+const AdminRedeemCard = () => {
+  const defaultTokens = useAllTokens()
   const { account } = useActiveWeb3React()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -55,6 +57,11 @@ export default function AdminRedeemCard() {
 
   const handleConfirmDismiss = useCallback(() => {
     console.log('do nothing')
+  }, [])
+
+  useEffect(() => {
+    document.title = `You clicked  times`
+    getDistributionData()
   }, [])
 
   const { independentField, typedValue, recipient } = useSwapState()
@@ -76,9 +83,12 @@ export default function AdminRedeemCard() {
         */
       }
 
+  /*
   if (parsedAmounts[Field.INPUT] && maxAmountInput) {
-    console.log(`field inputww1  : ${parsedAmounts[Field.INPUT].toSignificant(6)}`)
+
+    //console.log(`field inputww1  : ${parsedAmounts[Field.INPUT].toSignificant(6)}`)
   }
+  */
 
   const userHasSpecifiedInputOutput = Boolean(
     !!currencies[Field.INPUT] && parsedAmounts[Field.INPUT]?.greaterThan(JSBI.BigInt(0)),
@@ -90,7 +100,7 @@ export default function AdminRedeemCard() {
       : undefined,
   )
 
-  console.log(`has enough token: ${userHasEnoughToken}`)
+  // console.log(`has enough token: ${userHasEnoughToken}`)
 
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -119,14 +129,17 @@ export default function AdminRedeemCard() {
   }
 
   const getAccountBalance = (account22) => {
+    getDistributionData()
     return ''
   }
 
-  const handleInputSelect = (inputCurrency) => {
-    console.log(inputCurrency.address)
-    setactiveCurrencyAddress(inputCurrency.address)
-    onCurrencySelection(Field.INPUT, inputCurrency)
-    getDistributionData()
+  const handleInputSelect = async (inputCurrency) => {
+    console.log(`input currency = ${inputCurrency.address} ${inputCurrency instanceof Token}`)
+    await setactiveCurrencyAddress(inputCurrency.address)
+    console.log(`activeCurrencyAddress: ${activeCurrencyAddress}`)
+    await onCurrencySelection(Field.INPUT, inputCurrency)
+    console.log(`input currency = ${util.inspect(currencies[Field.INPUT])}`)
+    getDistributionData(inputCurrency.address)
     /*
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
@@ -146,10 +159,12 @@ export default function AdminRedeemCard() {
 
   const handleChangeInput = (event) => {
     setRedeemAmt(event.target.value)
+    getDistributionData()
   }
 
   const handleNewOwnerAddressInput = (event) => {
     setNewOwnerAddress(event.target.value)
+    getDistributionData()
   }
 
   const [onPresentConfirmModal2] = useModal(
@@ -162,9 +177,11 @@ export default function AdminRedeemCard() {
   const RedeemHandler = (event) => {
     if (account) {
       console.log(`eeeeeeee${redeemAmt} ${activeCurrencyAddress}`)
+
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
+      const cntAddress = getAddressaa(currencies[Field.INPUT])
+      const avc20Cnt = new ethers.Contract(cntAddress, avc20ABI.abi, signer)
       console.log(ethers.utils.parseEther(redeemAmt))
       try {
         avc20Cnt
@@ -185,57 +202,8 @@ export default function AdminRedeemCard() {
     }
   }
 
-  const AddTokenHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-
-      try {
-        avc20Cnt
-          .addToTokensListArray(JSON.parse(newTokenAddress))
-          .then(
-            (result) => {
-              console.log(`redeem results ${result}`)
-            },
-            (error) => {
-              console.log(`redeem errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
-    }
-  }
-
   const handleNewTokenInput = (event) => {
     setNewTokenAddress(event.target.value)
-  }
-
-  const collectDistributionHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      try {
-        avc20Cnt
-          .collect()
-          .then(
-            (result) => {
-              console.log(`redeem results ${result}`)
-            },
-            (error) => {
-              console.log(`redeem errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
-    }
   }
 
   const getAddressaa = (input: any) => {
@@ -244,110 +212,46 @@ export default function AdminRedeemCard() {
     return ''
   }
 
-  const getDistributionData = async () => {
+  const getDistributionData = async (cntAddress = '') => {
     const MAX_PROPOSALS = 5
     console.log(`get Redeem Amounts`)
-    if (account) {
-      console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
-      let temp
-      try {
-        const amts = []
-        console.log('here')
-        const amtsToDistribute = await avc20Cnt.getAvailableDistributions()
-        console.log('here2')
-        const tempTokenList = await avc20Cnt.getTokenList()
-        console.log(`amtsToDistribute length: ${amtsToDistribute.length}`)
-        console.log(`distribution amt = ${util.inspect(tempTokenList)}`)
-        /* eslint no-await-in-loop: 0 */
+    console.log(`tokenList: ${util.inspect(TokenList)}`)
+    console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
 
-        for (let i = 0; i < amtsToDistribute.length; ++i) {
-          temp = {
-            amt: (Number(amtsToDistribute[i]) / 10 ** 18).toString(),
-            symbol: tempTokenList[i],
-          }
-          amts.push(temp)
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // const signer = provider.getSigner()
+
+    const cntAddress2 = cntAddress.length < 10 ? getAddressaa(currencies[Field.INPUT]) : cntAddress
+
+    const avc20Cnt = new ethers.Contract(cntAddress2, avc20ABI.abi, provider)
+    let temp
+    try {
+      const amts = []
+      console.log('here')
+      const amtsToDistribute = await avc20Cnt.getAvailableDistributions()
+      console.log('here2')
+      const tempTokenList = await avc20Cnt.getTokenList()
+      console.log(`amtsToDistribute length: ${amtsToDistribute.length}`)
+      console.log(`distribution amt = ${util.inspect(tempTokenList)}`)
+      /* eslint no-await-in-loop: 0 */
+      /* eslint no-restricted-syntax: 0 */
+      let sym = ''
+      for (let i = 0; i < amtsToDistribute.length; ++i) {
+        for (const tokenA in defaultTokens) {
+          if (tokenA === tempTokenList[i]) sym = defaultTokens[tokenA].symbol
         }
 
-        setDistributionData(amts)
-        console.log(util.inspect(amts))
-      } catch (e) {
-        console.log(`distribution data ${util.inspect(e)}`)
+        temp = {
+          'Amt Available': (Number(amtsToDistribute[i]) / 10 ** 18).toString(),
+          symbol: sym,
+        }
+        amts.push(temp)
       }
-    }
-  }
 
-  const transferOwnershipHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      try {
-        avc20Cnt
-          .transferOwnership(newOwnerAddress)
-          .then(
-            (result) => {
-              console.log(`redeem results ${result}`)
-            },
-            (error) => {
-              console.log(`redeem errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
-    }
-  }
-
-  const voteForHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      try {
-        avc20Cnt
-          .placeVoteForDist()
-          .then(
-            (result) => {
-              console.log(`vote for results ${result}`)
-            },
-            (error) => {
-              console.log(`vote for errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
-    }
-  }
-
-  const removeVoteHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      try {
-        avc20Cnt
-          .removeVoteForDist()
-          .then(
-            (result) => {
-              console.log(`remove vote results ${result}`)
-            },
-            (error) => {
-              console.log(`remove vote ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
+      setDistributionData(amts)
+      console.log(util.inspect(amts))
+    } catch (e) {
+      console.log(`distribution data ${util.inspect(e)}`)
     }
   }
 
@@ -428,21 +332,9 @@ export default function AdminRedeemCard() {
             <tr>
               <td>
                 {account && currencies[Field.INPUT] && maxAmountInput ? (
-                  userHasSpecifiedInputOutput ? (
-                    userHasEnoughToken ? (
-                      <Button disabled={false} onClick={getDistributionData}>
-                        Get Redeem Amounts
-                      </Button>
-                    ) : (
-                      <Button disabled onClick={getDistributionData}>
-                        Get Redeem Amounts
-                      </Button>
-                    )
-                  ) : (
-                    <Button disabled onClick={getDistributionData}>
-                      Get Redeem Amounts
-                    </Button>
-                  )
+                  <Button disabled={false} onClick={getDistributionData}>
+                    Get Redeem Amounts
+                  </Button>
                 ) : (
                   <Button disabled onClick={getDistributionData}>
                     Get Redeem Amounts
@@ -473,3 +365,5 @@ export default function AdminRedeemCard() {
     </Page>
   )
 }
+
+export default AdminRedeemCard

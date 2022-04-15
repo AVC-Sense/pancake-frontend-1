@@ -114,19 +114,18 @@ export default function ManagementCard() {
     return ''
   }
 
+  /*
+  const handleInputSelect = useCallback(
+    (inputCurrency) => {
+     // setApprovalSubmitted(false) // reset 2 step UI for approvals
+      onCurrencySelection(Field.INPUT, inputCurrency)
+    },
+    [onCurrencySelection],
+  )
+  */
   const handleInputSelect = (inputCurrency) => {
     setactiveCurrencyAddress(inputCurrency.address)
     onCurrencySelection(Field.INPUT, inputCurrency)
-    /*
-      setApprovalSubmitted(false) // reset 2 step UI for approvals
-      onCurrencySelection(Field.INPUT, inputCurrency)
-      const showSwapWarning = shouldShowSwapWarning(inputCurrency)
-      if (showSwapWarning) {
-        setSwapWarningCurrency(inputCurrency)
-      } else {
-        setSwapWarningCurrency(null)
-      }
-      */
   }
 
   const chainChangedHandler = () => {
@@ -196,7 +195,10 @@ export default function ManagementCard() {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
+
+      const cntAddress = getAddressaa(currencies[Field.INPUT])
+
+      const avc20Cnt = new ethers.Contract(cntAddress, avc20ABI.abi, signer)
 
       try {
         const numProposal = await avc20Cnt.getNumProposalsMint()
