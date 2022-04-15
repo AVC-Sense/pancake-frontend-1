@@ -2,6 +2,9 @@ import util from 'util'
 import React, { useState, useCallback } from 'react'
 import avc20ABI from 'config/abi/AVC20.json'
 import {
+  Th,
+  Td,
+  Table,
   Button,
   Text,
   ArrowDownIcon,
@@ -111,6 +114,7 @@ export default function AdminRedeemCard() {
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount)
     getAccountBalance(newAccount.toString())
+    getDistributionData()
   }
 
   const getAccountBalance = (account22) => {
@@ -208,31 +212,6 @@ export default function AdminRedeemCard() {
     setNewTokenAddress(event.target.value)
   }
 
-  /*
-  const distributeHandler = (event) => {
-    if (account) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const avc20Cnt = new ethers.Contract(activeCurrencyAddress, avc20ABI.abi, signer)
-      try {
-        avc20Cnt
-          .distribute()
-          .then(
-            (result) => {
-              console.log(`redeem results ${result}`)
-            },
-            (error) => {
-              console.log(`redeem errorresults ${util.inspect(error)}`)
-              alert(`${util.inspect(error)}`)
-            },
-          )
-          .catch((err) => alert(err))
-      } catch (e) {
-        console.log(`redeem error ${e}`)
-      }
-    }
-  }
-  */
   const collectDistributionHandler = (event) => {
     if (account) {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -253,6 +232,47 @@ export default function AdminRedeemCard() {
           .catch((err) => alert(err))
       } catch (e) {
         console.log(`redeem error ${e}`)
+      }
+    }
+  }
+
+  const getAddressaa = (input: any) => {
+    if (input?.address) return input.address
+
+    return ''
+  }
+
+  const getDistributionData = async () => {
+    const MAX_PROPOSALS = 5
+    console.log(`get Redeem Amounts`)
+    if (account) {
+      console.log(`eeeeeeee${util.inspect(currencies[Field.INPUT])} ${activeCurrencyAddress}`)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const avc20Cnt = new ethers.Contract(getAddressaa(currencies[Field.INPUT]), avc20ABI.abi, signer)
+      let temp
+      try {
+        const amts = []
+        console.log('here')
+        const amtsToDistribute = await avc20Cnt.getAvailableDistributions()
+        console.log('here2')
+        const tempTokenList = await avc20Cnt.getTokenList()
+        console.log(`amtsToDistribute length: ${amtsToDistribute.length}`)
+        console.log(`distribution amt = ${util.inspect(tempTokenList)}`)
+        /* eslint no-await-in-loop: 0 */
+
+        for (let i = 0; i < amtsToDistribute.length; ++i) {
+          temp = {
+            amt: (Number(amtsToDistribute[i]) / 10 ** 18).toString(),
+            symbol: tempTokenList[i],
+          }
+          amts.push(temp)
+        }
+
+        setDistributionData(amts)
+        console.log(util.inspect(amts))
+      } catch (e) {
+        console.log(`distribution data ${util.inspect(e)}`)
       }
     }
   }
@@ -331,27 +351,7 @@ export default function AdminRedeemCard() {
 
   const handleOnUserInput = (event) => {
     console.log(util.inspect(event))
-    /*
-      const handleTypeInput = useCallback(
-      (value: string) => {
-        onUserInput(Field.INPUT, value)
-      },
-      [onUserInput],
-    )
-    */
   }
-
-  /*
- <div className='accountDisplay'>
-				<h3>Address: {defaultAccount}</h3>
-			</div>
-			<div className='balanceDisplay'>
-				<h3>Native Token Balance: {userBalance}</h3>
-			</div>
-			<div className='ALESSIO Balance'>
-				<h3>ALLESSIO BALANCE: {balance1}</h3>
-			</div>
-	*/
 
   window.ethereum.on('accountsChanged', accountChangedHandler)
 
@@ -367,6 +367,7 @@ export default function AdminRedeemCard() {
   const [newTokenAddress, setNewTokenAddress] = useState(null)
   const [newOwnerAddress, setNewOwnerAddress] = useState('0x0000000000000000000000000000000000000000')
   const [data1, setdata1] = useState({ amount: 0 })
+  const [distributionData, setDistributionData] = useState([{}])
 
   return (
     <Page removePadding={false}>
@@ -422,7 +423,47 @@ export default function AdminRedeemCard() {
                 )}
               </td>
             </tr>
+            <tr>
+              <td>
+                {account && currencies[Field.INPUT] && maxAmountInput ? (
+                  userHasSpecifiedInputOutput ? (
+                    userHasEnoughToken ? (
+                      <Button disabled={false} onClick={getDistributionData}>
+                        Get Redeem Amounts
+                      </Button>
+                    ) : (
+                      <Button disabled onClick={getDistributionData}>
+                        Get Redeem Amounts
+                      </Button>
+                    )
+                  ) : (
+                    <Button disabled onClick={getDistributionData}>
+                      Get Redeem Amounts
+                    </Button>
+                  )
+                ) : (
+                  <Button disabled onClick={getDistributionData}>
+                    Get Redeem Amounts
+                  </Button>
+                )}
+              </td>
+            </tr>
           </table>
+
+          <Table>
+            <tr key="header">
+              {Object.keys(distributionData[0]).map((key) => (
+                <Th>{key}</Th>
+              ))}
+            </tr>
+            {distributionData.map((item: any) => (
+              <tr key={item.id}>
+                {Object.values(item).map((val) => (
+                  <Td>{val}</Td>
+                ))}
+              </tr>
+            ))}
+          </Table>
 
           {errorMessage}
         </div>

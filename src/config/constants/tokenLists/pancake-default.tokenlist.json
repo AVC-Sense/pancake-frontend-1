@@ -68,14 +68,23 @@
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     },
+    {
+      "name": "TestBB",
+      "symbol": "TESTB",
+      "address": "0xB16bf97e94c26460C028931B410a4bfF68847cEC",
+      "chainId": 43474,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
      {
       "name": "TestCC",
       "symbol": "TESTC",
-      "address": "0x8AC86e33a5Cb110AdBe372aaC2017b11E21DDDE3",
+      "address": "0x96906cEe373d142145ad1bFa28855d674a0dEA77",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     }
+     
 
 
     
