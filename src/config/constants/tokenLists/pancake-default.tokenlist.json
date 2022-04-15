@@ -14,7 +14,7 @@
     {
       "name": "AVC Token",
       "symbol": "AVC",
-      "address": "0x584195792381f17CA36D30C5d3283B804d61190D",
+      "address": "0x76516A952B8e4DEB2d341E727E8FEb3Ed6D32377",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
@@ -22,7 +22,7 @@
     {
       "name": "$USD Token",
       "symbol": "$USD",
-      "address": "0x560c332A1041Ae246dD0396c7e9708537bE37eA0",
+      "address": "0x2C25a279Fa3789540f6e03dC5a22F1119188774D",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
@@ -30,7 +30,7 @@
     {
       "name": "Alesso Token",
       "symbol": "ALSSO",
-      "address": "0xCf94D65aeB9F61c04ed2d9C3b8053f57f8F0E8AC",
+      "address": "0xA67eD62c7B9c5609d3e8F0FffA73b8ed625021D9",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -39,7 +39,7 @@
     {
       "name": "Princeton Tec Token",
       "symbol": "PTE",
-      "address": "0xd8c88AE0a90aB92EA3958B97ebdE517350765438",
+      "address": "0x976A1cD809E56F38Dd57938f991CBAFD1C72F750",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -47,7 +47,7 @@
     {
       "name": "Javasok Token",
       "symbol": "JAV",
-      "address": "0x5fCc3b1f62Dbf1eF43D4d9Fa80ceF496D33CaD7A",
+      "address": "0x6b39c3F4c485e0c331A33940614a66acAD307f6F",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
@@ -63,7 +63,7 @@
     {
       "name": "PhilpCoin",
       "symbol": "PHILP",
-      "address": "0x979f1906C3780CC3127EeDf9D968B5FC0Cb25b7E",
+      "address": "0x0c526268f08C7b0Ea7dB5Df120b188E910060888",
       "chainId": 43474,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
